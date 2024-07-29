@@ -17,6 +17,15 @@ module.exports = {
       },
     },
     extend: {
+      colors: {
+        primary: "#006413",
+        secondary: "#3E4A3C",
+        accent: "#FFFBCE"
+      },
+      fontFamily: {
+        primary: "Libre Baskerville, serif",
+        secondary: "Raleway, sans-serif"
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
