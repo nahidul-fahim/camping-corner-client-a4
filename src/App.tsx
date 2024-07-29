@@ -1,11 +1,13 @@
+import MainLayout from "./components/layout/MainLayout"
+
 
 
 function App() {
 
   return (
-    <div>
-      <h2 className="text-5xl text-primary ">This is heading</h2>
-    </div>
+    <>
+      <MainLayout />
+    </>
   )
 }
 
