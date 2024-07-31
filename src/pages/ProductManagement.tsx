@@ -1,9 +1,17 @@
+import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
+
 
 
 const ProductManagement = () => {
+
+    const { data } = useGetAllProductsQuery(undefined);
+
+    console.log(data);
+
+
     return (
         <div>
-            <h2 className="text-5xl font-bold text-primary">Product management</h2>
+
         </div>
     );
 };
