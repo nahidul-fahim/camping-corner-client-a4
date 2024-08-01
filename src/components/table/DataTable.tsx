@@ -8,26 +8,49 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
+type Column = {
+    title: string;
+};
 
-const DataTable = () => {
+type TDataTableProps = {
+    tableColumns: Column[];
+    tableRows: any;
+}
+
+
+
+const DataTable = ({ tableColumns, tableRows }: TDataTableProps) => {
     return (
         <Table>
             <TableCaption>A list of your recent invoices.</TableCaption>
             <TableHeader>
                 <TableRow>
-                    <TableHead className="w-[100px]">Invoice</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Method</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
+                    {
+                        tableColumns?.map((column, index) =>
+                            <TableHead
+                                key={index}
+                                className="w-[300px]"
+                            >
+                                {column?.title}
+                            </TableHead>
+                        )
+                    }
                 </TableRow>
             </TableHeader>
+
+
             <TableBody>
-                <TableRow>
-                    <TableCell className="font-medium">INV001</TableCell>
-                    <TableCell>Paid</TableCell>
-                    <TableCell>Credit Card</TableCell>
-                    <TableCell className="text-right">$250.00</TableCell>
-                </TableRow>
+                {tableRows?.map((row, rowIdx) =>
+                    <TableRow key={rowIdx}>
+                        {
+                            tableColumns?.map((column, columnIdx) =>
+                                <TableCell className="font-medium">
+                                    {column?.renderCell(row, rowIdx)}
+                                </TableCell>
+                            )
+                        }
+                    </TableRow>
+                )}
             </TableBody>
         </Table>
     );
