@@ -4,14 +4,18 @@ import { Button } from "@/components/ui/button";
 import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
+import { RxReload } from "react-icons/rx";
+import { GoHome } from "react-icons/go";
 
 
 type TProduct = Record<string, any>
 
 
 const ProductManagement = () => {
+
+    const navigate = useNavigate()
 
     const tableColumns = [
         {
@@ -58,8 +62,12 @@ const ProductManagement = () => {
         return <p>Loading....</p>
     }
     if (error) {
-        return <div>
-            <p className="text-red-500 text-lg font-primary">Oops! Something went wrong.</p>
+        return <div className="h-[100vh] w-full flex flex-col gap-3 justify-center items-center">
+            <p className="text-gray-500 text-xl font-medium">Oops! Something went wrong.</p>
+            <div className="flex justify-center items-center gap-3">
+                <Button variant={"secondary"} onClick={() => navigate(0)}><RxReload /> Reload</Button>
+                <Button onClick={() => navigate(0)}><GoHome /> Back to home</Button>
+            </div>
         </div>
     }
 
@@ -68,7 +76,7 @@ const ProductManagement = () => {
             <div className="w-full flex justify-between items-center">
                 <h3 className="font-primary text-3xl font-medium text-primary">Product list</h3>
                 {/* add new product button */}
-                <Link to={"/"}>
+                <Link to={"/add-product"}>
                     <Button><FaPlus /> Add new product</Button>
                 </Link>
             </div>
