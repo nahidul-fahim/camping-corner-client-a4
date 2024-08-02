@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -18,9 +19,9 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: "#006413",
-        secondary: "#3E4A3C",
-        accent: "#FFFBCE"
+        primary: "#00CBA8",
+        secondary: "#2f4858",
+        accent: "#ABFFEA"
       },
       fontFamily: {
         primary: "Libre Baskerville, serif",
