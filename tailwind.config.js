@@ -24,8 +24,8 @@ module.exports = {
         accent: "#ABFFEA"
       },
       fontFamily: {
-        primary: "Libre Baskerville, serif",
-        secondary: "Raleway, sans-serif"
+        primary: "Oswald, sans-serif",
+        secondary: "DM Sans, sans-serif"
       },
       keyframes: {
         "accordion-down": {

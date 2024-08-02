@@ -66,7 +66,7 @@ const ProductManagement = () => {
     return (
         <div className="p-10 w-full mx-auto flex flex-col justify-start items-start gap-5">
             <div className="w-full flex justify-between items-center">
-                <h3 className="font-primary text-2xl font-bold text-primary">Product list</h3>
+                <h3 className="font-primary text-3xl font-medium text-primary">Product list</h3>
                 {/* add new product button */}
                 <Link to={"/"}>
                     <Button><FaPlus /> Add new product</Button>
