@@ -8,18 +8,19 @@ type TInputProps = {
     label?: string;
     className?: string;
     minValue?: number;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // Add onChange prop
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const RHInput = ({ type, name, placeholder, label, className, minValue, onChange }: TInputProps) => {
-    const { control } = useFormContext(); // use useFormContext to get control
+
+    const { control } = useFormContext();
 
     return (
         <div className="space-y-2">
             {label ? <label>{label}</label> : null}
             <Controller
                 name={name}
-                control={control} // Add control here
+                control={control}
                 render={({ field }) =>
                     <Input
                         {...field}

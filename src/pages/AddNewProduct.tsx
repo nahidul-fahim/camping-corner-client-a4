@@ -1,5 +1,6 @@
 import RHFormProvider from "@/components/form/RHFormProvider";
 import RHInput from "@/components/form/RHInput";
+import RHTextArea from "@/components/form/RHTextArea";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 
@@ -19,6 +20,7 @@ const AddNewProduct = () => {
             setImagePreview(previewURL);
         }
     };
+
 
     return (
         <div className="relative flex min-h-[100vh]">
@@ -73,12 +75,11 @@ const AddNewProduct = () => {
                             className="w-full"
                         />
                         {/* product description */}
-                        <RHInput
-                            type="text"
+                        <RHTextArea
                             name="description"
                             placeholder="Product description"
                             label="Product description"
-                            className="w-full md:col-span-2"
+                            className="w-full"
                         />
                         {/* product image */}
                         <RHInput
@@ -86,7 +87,7 @@ const AddNewProduct = () => {
                             name="image"
                             placeholder="Product image"
                             label="Product image"
-                            className="w-full md:col-span-2"
+                            className="w-full"
                             onChange={handleImageChange}
                         />
                         {imagePreview && (
