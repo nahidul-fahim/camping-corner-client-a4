@@ -21,7 +21,8 @@ module.exports = {
       colors: {
         primary: "#00CBA8",
         secondary: "#2f4858",
-        accent: "#ABFFEA"
+        accent: "#ABFFEA",
+        offWhite: "#f0f0f0"
       },
       fontFamily: {
         primary: "Oswald, sans-serif",

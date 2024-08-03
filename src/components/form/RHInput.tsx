@@ -6,12 +6,14 @@ type TInputProps = {
     name: string;
     placeholder?: string;
     label?: string;
+    className?: string;
+    minValue?: number;
 }
 
 
-const RHInput = ({ type, name, placeholder, label }: TInputProps) => {
+const RHInput = ({ type, name, placeholder, label, className, minValue }: TInputProps) => {
     return (
-        <div>
+        <div className="space-y-2">
             {label ?
                 <label>{label}</label>
                 :
@@ -24,7 +26,9 @@ const RHInput = ({ type, name, placeholder, label }: TInputProps) => {
                         {...field}
                         type={type}
                         id={name}
+                        min={minValue}
                         placeholder={placeholder}
+                        className={`${className} bg-white`}
                     />
                 }
             />

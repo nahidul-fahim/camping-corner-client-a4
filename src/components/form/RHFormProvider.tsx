@@ -4,16 +4,19 @@ import { FieldValues, FormProvider, SubmitHandler, useForm } from "react-hook-fo
 type TFormProps = {
     onSubmit: SubmitHandler<FieldValues>;
     children: ReactNode;
+    className?: string;
 }
 
-const RHFormProvider = ({ onSubmit, children }: TFormProps) => {
+const RHFormProvider = ({ onSubmit, children, className }: TFormProps) => {
 
     const methods = useForm();
 
 
     return (
         <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <form
+                onSubmit={methods.handleSubmit(onSubmit)}
+                className={className}>
                 {children}
             </form>
         </FormProvider>
