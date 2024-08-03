@@ -1,15 +1,41 @@
 import RHFormProvider from "@/components/form/RHFormProvider";
 import RHInput from "@/components/form/RHInput";
 import RHTextArea from "@/components/form/RHTextArea";
+import { useCreateProductMutation } from "@/redux/features/product/productApi";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 const AddNewProduct = () => {
 
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [createProduct, { isError, isLoading, isSuccess }] = useCreateProductMutation();
 
-    const onSubmit = (data: FieldValues) => {
-        console.log(data);
+    const onSubmit = async (data: FieldValues) => {
+
+        console.log(data?.image)
+
+        const toastId = toast.loading("Creating new product!");
+        try {
+            const productInfo = new FormData();
+            productInfo.append('name', data?.name);
+            productInfo.append('description', data?.description);
+            productInfo.append('category', data?.category);
+            productInfo.append('price', data?.price);
+            productInfo.append('quantity', data?.quantity);
+            productInfo.append('image', data?.image);
+
+            // sending to api 
+            await createProduct(productInfo).unwrap();
+            if (isSuccess) {
+                toast.success("Created new product!", { id: toastId, duration: 2000 })
+            }
+            if (isError) {
+                toast.error("Something went wrong!", { id: toastId, duration: 2000 })
+            }
+        } catch (error) {
+            toast.error("Something went wrong!", { id: toastId, duration: 2000 })
+        }
     };
 
     // handle image change
@@ -96,8 +122,15 @@ const AddNewProduct = () => {
                             </div>
                         )}
                     </div>
-                    <button type="submit" className="border px-3 py-1 self-start bg-primary text-white rounded font-medium hover:bg-secondary duration-300">
-                        Add Product
+                    {/* submit button */}
+                    <button
+                        type="submit"
+                        className="border px-3 py-1 self-start bg-primary text-white rounded font-medium hover:bg-secondary duration-300 disabled:bg-primary/60 disabled:cursor-not-allowed"
+                        disabled={isLoading}>
+                        {isLoading ?
+                            "Creating product"
+                            :
+                            "Add Product"}
                     </button>
                 </RHFormProvider>
             </div>
