@@ -1,10 +1,23 @@
 import RHFormProvider from "@/components/form/RHFormProvider";
 import RHInput from "@/components/form/RHInput";
+import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 
 const AddNewProduct = () => {
+
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+
     const onSubmit = (data: FieldValues) => {
         console.log(data);
+    };
+
+    // handle image change
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const previewURL = URL.createObjectURL(file);
+            setImagePreview(previewURL);
+        }
     };
 
     return (
@@ -67,8 +80,22 @@ const AddNewProduct = () => {
                             label="Product description"
                             className="w-full md:col-span-2"
                         />
+                        {/* product image */}
+                        <RHInput
+                            type="file"
+                            name="image"
+                            placeholder="Product image"
+                            label="Product image"
+                            className="w-full md:col-span-2"
+                            onChange={handleImageChange}
+                        />
+                        {imagePreview && (
+                            <div className="mt-2">
+                                <img src={imagePreview} alt="Selected Product" className="h-40 w-40 object-cover" />
+                            </div>
+                        )}
                     </div>
-                    <button type="submit" className="border px-3 py-1 self-start">
+                    <button type="submit" className="border px-3 py-1 self-start bg-primary text-white rounded font-medium hover:bg-secondary duration-300">
                         Add Product
                     </button>
                 </RHFormProvider>
