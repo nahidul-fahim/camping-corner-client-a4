@@ -1,46 +1,42 @@
-import { Controller, useFormContext } from "react-hook-form";
-import { Input } from "../ui/input";
+import { useFormContext, Controller } from 'react-hook-form';
 
-type TInputProps = {
-    type: string;
+type TSelectFieldProps = {
     name: string;
     placeholder?: string;
     label?: string;
     className?: string;
-    minValue?: number;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const RHInput = ({ type, name, placeholder, label, className, minValue, onChange }: TInputProps) => {
 
+const RHFileSelect = ({ name, placeholder, label, className, onChange }: TSelectFieldProps) => {
     const { control } = useFormContext();
 
     return (
         <div className="space-y-2">
-            {label ? <label>{label}</label> : null}
+            {label ? <label htmlFor={name}>{label}</label> : null}
             <Controller
                 name={name}
                 control={control}
-                render={({ field }) =>
-                    <Input
-                        {...field}
-                        type={type}
+                render={({ field: { onChange: fieldOnChange, ...rest } }) => (
+                    <input
+                        type="file"
                         id={name}
-                        min={minValue}
-                        step=".01"
+                        accept="image/*"
                         placeholder={placeholder}
                         onChange={(e) => {
-                            field.onChange(e);
+                            fieldOnChange(e);
                             if (onChange) {
                                 onChange(e);
                             }
                         }}
                         className={`${className} bg-white`}
+                        {...rest}
                     />
-                }
+                )}
             />
         </div>
     );
 };
 
-export default RHInput;
+export default RHFileSelect;

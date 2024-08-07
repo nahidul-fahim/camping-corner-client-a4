@@ -8,6 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { RxReload } from "react-icons/rx";
 import { GoHome } from "react-icons/go";
+import OpenModal from "@/components/openModal/OpenModal";
+import { DialogClose } from "@/components/ui/dialog";
 
 
 type TProduct = Record<string, any>
@@ -15,7 +17,15 @@ type TProduct = Record<string, any>
 
 const ProductManagement = () => {
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+
+    // handle delete a product
+    const handleDeleteProduct = (id: string) => {
+        console.log(id);
+    }
+
+
 
     const tableColumns = [
         {
@@ -48,14 +58,36 @@ const ProductManagement = () => {
             renderCell: (row: TProduct) =>
                 <span className=" flex justify-start items-center gap-3 text-xl">
                     <CiEdit className="text-slate-700 hover:text-slate-400 duration-200" />
-                    <MdDeleteOutline className="text-red-600 hover:text-red-400 duration-200" />
+                    {/* delete button */}
+                    <OpenModal
+                        trigger={
+                            <button>
+                                <MdDeleteOutline className="text-red-500 hover:text-red-700 duration-200" />
+                            </button>
+                        }
+                        title="Are you sure?"
+                        description="Are you sure you want to delete the product? You cannot undo this."
+                    >
+                        <div className="w-full flex justify-end items-center gap-3">
+                            {/* edit product button */}
+                            <Button variant={"secondary"}>Cancel</Button>
+                            {/* delete product modal */}
+                            <DialogClose asChild>
+                                <Button
+                                    variant={"destructive"}
+                                    onClick={() => handleDeleteProduct(row?._id)}
+                                >
+                                    Yes! Delete
+                                </Button>
+                            </DialogClose>
+                        </div>
+                    </OpenModal>
                 </span>
         },
     ]
 
     // current data
     const { error, isLoading, data, } = useGetAllProductsQuery(undefined);
-
 
     // loading and conditional data
     if (isLoading) {
