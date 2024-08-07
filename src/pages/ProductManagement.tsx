@@ -18,6 +18,9 @@ type TProduct = Record<string, any>
 const ProductManagement = () => {
 
     const [deleteProduct, { isLoading: isDeleting, isError: isDeleteError }] = useDeleteProductMutation();
+    // current data
+    const { error, isLoading, data, refetch } = useGetAllProductsQuery(undefined);
+
 
     // handle delete a product
     const handleDeleteProduct = async (id: string) => {
@@ -25,6 +28,7 @@ const ProductManagement = () => {
         const result = await deleteProduct(id).unwrap();
         if (result?.success) {
             toast.success(result?.message, { id: toastId, duration: 2000 });
+            refetch();
         }
         else {
             toast.error(result?.message, { id: toastId, duration: 2000 });
@@ -92,8 +96,6 @@ const ProductManagement = () => {
         },
     ]
 
-    // current data
-    const { error, isLoading, data, } = useGetAllProductsQuery(undefined);
 
     // loading and conditional data
     if (isLoading) {
