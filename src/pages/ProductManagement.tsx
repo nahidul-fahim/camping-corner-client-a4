@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import DataTable from "@/components/table/DataTable";
 import { Button } from "@/components/ui/button";
-import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
+import { useDeleteProductMutation, useGetAllProductsQuery } from "@/redux/features/product/productApi";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
-import { RxReload } from "react-icons/rx";
-import { GoHome } from "react-icons/go";
 import OpenModal from "@/components/openModal/OpenModal";
 import { DialogClose } from "@/components/ui/dialog";
+import ErrorComponent from "@/components/error/ErrorComponent";
+import { toast } from "sonner";
 
 
 type TProduct = Record<string, any>
@@ -17,14 +17,19 @@ type TProduct = Record<string, any>
 
 const ProductManagement = () => {
 
-    const navigate = useNavigate();
-
+    const [deleteProduct, { isLoading: isDeleting, isError: isDeleteError }] = useDeleteProductMutation();
 
     // handle delete a product
-    const handleDeleteProduct = (id: string) => {
-        console.log(id);
+    const handleDeleteProduct = async (id: string) => {
+        const toastId = toast.loading("Deleting product!");
+        const result = await deleteProduct(id).unwrap();
+        if (result?.success) {
+            toast.success(result?.message, { id: toastId, duration: 2000 });
+        }
+        else {
+            toast.error(result?.message, { id: toastId, duration: 2000 });
+        }
     }
-
 
 
     const tableColumns = [
@@ -74,10 +79,11 @@ const ProductManagement = () => {
                             {/* delete product modal */}
                             <DialogClose asChild>
                                 <Button
+                                    disabled={isDeleting}
                                     variant={"destructive"}
                                     onClick={() => handleDeleteProduct(row?._id)}
                                 >
-                                    Yes! Delete
+                                    {isDeleting ? "Deleting..." : "Yes! Delete"}
                                 </Button>
                             </DialogClose>
                         </div>
@@ -93,14 +99,8 @@ const ProductManagement = () => {
     if (isLoading) {
         return <p>Loading....</p>
     }
-    if (error) {
-        return <div className="h-[100vh] w-full flex flex-col gap-3 justify-center items-center">
-            <p className="text-gray-500 text-xl font-medium">Oops! Something went wrong.</p>
-            <div className="flex justify-center items-center gap-3">
-                <Button variant={"secondary"} onClick={() => navigate(0)}><RxReload /> Reload</Button>
-                <Button onClick={() => navigate(0)}><GoHome /> Back to home</Button>
-            </div>
-        </div>
+    if (error || isDeleteError) {
+        return <ErrorComponent />
     }
 
     return (
