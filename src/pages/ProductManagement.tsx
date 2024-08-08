@@ -35,7 +35,7 @@ const ProductManagement = () => {
         }
     }
 
-
+    // table columns
     const tableColumns = [
         {
             title: 'Serial',
@@ -66,7 +66,10 @@ const ProductManagement = () => {
             title: 'Actions',
             renderCell: (row: TProduct) =>
                 <span className=" flex justify-start items-center gap-3 text-xl">
-                    <CiEdit className="text-slate-700 hover:text-slate-400 duration-200" />
+                    {/* update product */}
+                    <Link to={`/update-product/${row?._id}`}>
+                        <CiEdit className="text-slate-700 hover:text-slate-400 duration-200" />
+                    </Link>
                     {/* delete button */}
                     <OpenModal
                         trigger={
@@ -78,7 +81,6 @@ const ProductManagement = () => {
                         description="Are you sure you want to delete the product? You cannot undo this."
                     >
                         <div className="w-full flex justify-end items-center gap-3">
-                            {/* edit product button */}
                             <Button variant={"secondary"}>Cancel</Button>
                             {/* delete product modal */}
                             <DialogClose asChild>

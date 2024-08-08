@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "../ui/input";
 
@@ -7,11 +8,12 @@ type TInputProps = {
     placeholder?: string;
     label?: string;
     className?: string;
+    defaultValue?: any;
     minValue?: number;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const RHInput = ({ type, name, placeholder, label, className, minValue, onChange }: TInputProps) => {
+const RHInput = ({ type, name, placeholder, label, className, defaultValue, minValue, onChange }: TInputProps) => {
 
     const { control } = useFormContext();
 
@@ -29,6 +31,7 @@ const RHInput = ({ type, name, placeholder, label, className, minValue, onChange
                         min={minValue}
                         step=".01"
                         placeholder={placeholder}
+                        defaultValue={defaultValue}
                         onChange={(e) => {
                             field.onChange(e);
                             if (onChange) {

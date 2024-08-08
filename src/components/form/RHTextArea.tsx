@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Controller, useFormContext } from "react-hook-form";
 import { Textarea } from "../ui/textarea";
 
@@ -6,9 +7,10 @@ type TTextAreaProps = {
     placeholder: string;
     label: string;
     className?: string;
+    defaultValue?: any;
 }
 
-const RHTextArea = ({ name, placeholder, label, className }: TTextAreaProps) => {
+const RHTextArea = ({ name, placeholder, label, className, defaultValue }: TTextAreaProps) => {
 
     const { control } = useFormContext();
 
@@ -22,6 +24,7 @@ const RHTextArea = ({ name, placeholder, label, className }: TTextAreaProps) => 
                     <Textarea
                         {...field}
                         placeholder={placeholder}
+                        defaultValue={defaultValue}
                         className={`${className} bg-white`}
                     />
                 }
