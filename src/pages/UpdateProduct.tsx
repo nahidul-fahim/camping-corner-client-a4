@@ -6,12 +6,13 @@ import RHInput from "@/components/form/RHInput";
 import RHTextArea from "@/components/form/RHTextArea";
 import { useGetSingleProductQuery, useUpdateProductMutation } from "@/redux/features/product/productApi";
 import RHFileSelect from "@/components/form/RHFileSelect";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ErrorComponent from "@/components/error/ErrorComponent";
 
 const UpdateProduct = () => {
 
     const { id } = useParams();
+    const navigate = useNavigate();
     const { error, isLoading, data } = useGetSingleProductQuery(id);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [productImage, setProductImage] = useState<File | null>(null);
@@ -60,15 +61,13 @@ const UpdateProduct = () => {
                 updatedProductData.image = currentData?.image
             }
 
-            console.log("Current data =>", currentData)
-            console.log("Complete data =>", updatedProductData)
-
             // append the data
             updatedData.append('data', JSON.stringify(updatedProductData))
 
             // send the formData to api
-            await updateProduct({id, updatedData}).unwrap();
+            await updateProduct({ id, productInfo: updatedData }).unwrap();
             toast.success("Product updated!", { id: toastId, duration: 2000 });
+            navigate("/product-management")
         } catch (error) {
             toast.error("Something went wrong!", { id: toastId, duration: 2000 });
         }
