@@ -22,6 +22,8 @@ const AddNewProduct = () => {
         }
     };
 
+
+    // send the new data to server
     const onSubmit = async (data: FieldValues) => {
         const toastId = toast.loading("Creating new product!");
         try {
