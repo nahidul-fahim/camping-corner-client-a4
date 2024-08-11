@@ -16,7 +16,7 @@ const buttonVariants = cva(
         destructive:
           "bg-red-600 text-white hover:bg-red-500/90 duration-300 flex justify-center items-center gap-2 rounded",
         outline:
-          "border border-slate-200 bg-white shadow-sm hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50",
+          "border border-slate-200 bg-white hover:bg-primary hover:text-white",
         ghost: "hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50",
         link: "text-slate-900 underline-offset-4 hover:underline dark:text-slate-50",
       },
