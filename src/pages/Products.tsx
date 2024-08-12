@@ -17,6 +17,18 @@ const Products = () => {
         return <p>Loading...</p>
     }
 
+    // getting the categories
+    const allCategories = allProducts?.data.map((product: TProduct) => product?.category);
+    const categories = allCategories?.filter((item: string,
+        index: number) =>
+        allCategories.indexOf(item) === index
+    );
+
+    // getting the max price
+    const maxPrice = Math.max(...allProducts?.data.map((product: TProduct) => product.price));
+
+    console.log(maxPrice);
+
     return (
         <div className="flex flex-col justify-start items-start">
             {/* title */}
@@ -34,9 +46,9 @@ const Products = () => {
             {/* page content */}
             <div className="container mx-auto flex justify-between items-stretch h-full gap-8">
                 {/* filtering section */}
-                <div className="w-[25%] border-r border-secondary/20 px-5 py-10">
+                <div className="w-[25%] border-r border-secondary/20 px-5 py-10 flex flex-col justify-start items-start gap-6">
                     {/* search input */}
-                    <div className="flex justify-start items-center">
+                    <div className="flex justify-start items-center w-full">
                         <Input
                             id="search"
                             name="search"
@@ -46,6 +58,38 @@ const Products = () => {
                             <FaArrowRight />
                         </Button>
                     </div>
+
+                    {/* categories */}
+                    <div className="w-full flex flex-col justify-start items-start gap-4">
+                        <h3 className="font-primary text-xl font-semibold">Categories</h3>
+                        <div className="flex flex-col justify-start items-start w-full gap-1">
+                            {
+                                categories.map((category: string, index: number) =>
+                                    <p key={index}
+                                        className="text-black bg-customGray/60 hover:bg-customGray duration-200 pl-8 py-2 rounded-sm cursor-pointer text-left w-full">
+                                        {category}
+                                    </p>)
+                            }
+                        </div>
+                    </div>
+
+
+                    {/* price range */}
+                    <div className="w-full flex flex-col justify-start items-start gap-4">
+                        <h3 className="font-primary text-xl font-semibold">Price</h3>
+                        {/* price inputs */}
+                        <div className="w-full flex justify-between items-center gap-12">
+                            {/* min price */}
+                            <Input
+                                defaultValue={0} />
+                            {/* max price */}
+                            <Input
+                                defaultValue={maxPrice} />
+                        </div>
+                    </div>
+
+
+
                 </div>
 
 
@@ -59,7 +103,7 @@ const Products = () => {
                         )
                     }
                 </div>
-g
+                g
             </div>
         </div>
     );

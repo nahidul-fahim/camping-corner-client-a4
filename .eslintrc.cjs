@@ -14,5 +14,9 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'no-undef': 'error',
+    'no-console': 'warn',
+    'no-unused-vars': 'error',
+    'no-input': 'error', 
   },
 }

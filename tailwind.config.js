@@ -22,7 +22,9 @@ module.exports = {
         primary: "#00CBA8",
         secondary: "#2f4858",
         accent: "#ABFFEA",
-        offWhite: "#f0f0f0"
+        offWhite: "#f0f0f0",
+        bodyText: "#5c5c5c",
+        customGray: "#d6d6d6"
       },
       fontFamily: {
         primary: "Oswald, sans-serif",
