@@ -17,6 +17,5 @@ module.exports = {
     'no-undef': 'error',
     'no-console': 'warn',
     'no-unused-vars': 'error',
-    'no-input': 'error', 
   },
 }

@@ -3,15 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
 import { TProduct } from "@/types/ProductType";
+import { FormEvent, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 
 const Products = () => {
 
-    // get all products
-    const { isLoading, data: allProducts } = useGetAllProductsQuery(undefined);
+    // state for searchTerm and minPrice
+    const [searchTerm, setSearchTerm] = useState("");
+    const [minPrice, setMinPrice] = useState(0);
 
-    console.log(allProducts);
+    // get all products
+    const { isLoading, data: allProducts } = useGetAllProductsQuery({ searchTerm, minPrice });
 
     if (isLoading) {
         return <p>Loading...</p>
@@ -19,15 +23,23 @@ const Products = () => {
 
     // getting the categories
     const allCategories = allProducts?.data.map((product: TProduct) => product?.category);
-    const categories = allCategories?.filter((item: string,
-        index: number) =>
+    const categories = allCategories?.filter((item: string, index: number) =>
         allCategories.indexOf(item) === index
     );
 
     // getting the max price
-    const maxPrice = Math.max(...allProducts?.data.map((product: TProduct) => product.price));
+    const maxPrice = Math.max(...allProducts?.data.map((product: TProduct) => product.price) || [0]);
 
-    console.log(maxPrice);
+    // filtering functionalities
+    const handleSearchTerm = (e: FormEvent) => {
+        e.preventDefault();
+        setSearchTerm((e.target as HTMLFormElement).search.value);
+    };
+
+    const handleMinPriceChange = (e: FormEvent) => {
+        console.log(e.target.value)
+        setMinPrice(Number((e.target as HTMLInputElement).value));
+    };
 
     return (
         <div className="flex flex-col justify-start items-start">
@@ -48,15 +60,33 @@ const Products = () => {
                 {/* filtering section */}
                 <div className="w-[25%] border-r border-secondary/20 px-5 py-10 flex flex-col justify-start items-start gap-6">
                     {/* search input */}
-                    <div className="flex justify-start items-center w-full">
-                        <Input
+                    <form
+                        onSubmit={handleSearchTerm}
+                        className="flex justify-start items-stretch w-full">
+                        <input
                             id="search"
                             name="search"
                             placeholder="Search products"
+                            className="focus:outline-none px-4 py-2 border-l border-y border-customGray rounded-l-md w-full"
                         />
-                        <Button variant="outline">
+                        <button type="submit" title="Search" className="px-4 py-2 border-r border-y border-customGray rounded-r-md hover:bg-primary duration-200 hover:text-white">
                             <FaArrowRight />
-                        </Button>
+                        </button>
+                    </form>
+
+                    {/* sort */}
+                    <div className="w-full flex flex-col justify-start items-start gap-4">
+                        <h3 className="font-primary text-xl font-semibold">Sort</h3>
+                        <div className="flex flex-col justify-start items-start w-full gap-1">
+                            {/* low to high */}
+                            <Button variant={"gray"}>
+                                Price, low to high
+                            </Button>
+                            {/* high to low */}
+                            <Button variant={"gray"}>
+                                Price, high to low
+                            </Button>
+                        </div>
                     </div>
 
                     {/* categories */}
@@ -64,11 +94,13 @@ const Products = () => {
                         <h3 className="font-primary text-xl font-semibold">Categories</h3>
                         <div className="flex flex-col justify-start items-start w-full gap-1">
                             {
-                                categories.map((category: string, index: number) =>
-                                    <p key={index}
-                                        className="text-black bg-customGray/60 hover:bg-customGray duration-200 pl-8 py-2 rounded-sm cursor-pointer text-left w-full">
+                                categories?.map((category: string, index: number) =>
+                                    <Button
+                                        key={index}
+                                        variant={"gray"}
+                                    >
                                         {category}
-                                    </p>)
+                                    </Button>)
                             }
                         </div>
                     </div>
@@ -81,14 +113,17 @@ const Products = () => {
                         <div className="w-full flex justify-between items-center gap-12">
                             {/* min price */}
                             <Input
-                                defaultValue={0} />
+                                defaultValue={0}
+                                onChange={handleMinPriceChange}
+                            />
                             {/* max price */}
                             <Input
                                 defaultValue={maxPrice} />
                         </div>
                     </div>
 
-
+                    {/* reset filter button */}
+                    <Button variant={"large"} className="w-full"><RiDeleteBin6Line className="text-xl" /> Clear all</Button>
 
                 </div>
 
@@ -103,7 +138,6 @@ const Products = () => {
                         )
                     }
                 </div>
-                g
             </div>
         </div>
     );

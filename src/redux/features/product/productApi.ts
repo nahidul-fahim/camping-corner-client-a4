@@ -5,8 +5,8 @@ const productApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         // get all products
         getAllProducts: builder.query({
-            query: () => ({
-                url: "/products",
+            query: ({ searchTerm, minPrice }) => ({
+                url: `/products?searchTerm=${searchTerm}&minPrice=${minPrice}`,
                 method: "GET"
             })
         }),
