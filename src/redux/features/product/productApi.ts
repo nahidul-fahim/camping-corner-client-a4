@@ -1,13 +1,11 @@
 import { baseApi } from "../../api/baseApi";
 
-
 const productApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         // get all products
         getAllProducts: builder.query({
             query: ({ searchTerm, minPrice, maxPrice, sort, category }) => {
 
-                console.log("From api",maxPrice)
                 // Construct the base query string
                 let queryString = `/products?searchTerm=${searchTerm}&minPrice=${minPrice}&sort=${sort}`;
 
@@ -25,7 +23,8 @@ const productApi = baseApi.injectEndpoints({
                     url: queryString,
                     method: "GET"
                 };
-            }
+            },
+            keepUnusedDataFor: 0
         }),
         // get single product
         getSingleProduct: builder.query({

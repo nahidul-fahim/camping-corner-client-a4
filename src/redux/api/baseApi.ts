@@ -12,4 +12,4 @@ export const baseApi = createApi({
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
     endpoints: () => ({}),
-})
+}) 

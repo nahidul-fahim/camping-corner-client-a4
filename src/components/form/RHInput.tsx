@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+import React from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "../ui/input";
 
@@ -10,6 +12,7 @@ type TInputProps = {
     className?: string;
     defaultValue?: any;
     minValue?: number;
+    // eslint-disable-next-line no-unused-vars
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 

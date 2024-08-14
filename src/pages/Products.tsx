@@ -18,9 +18,6 @@ const Products = () => {
     // Fetching all products initially
     const { isLoading, data: allProducts } = useGetAllProductsQuery({ searchTerm, minPrice, maxPrice, sort, category });
 
-    console.log("All products", allProducts)
-
-
     // Handle the search term submission
     const handleSearchTerm = (e: FormEvent) => {
         e.preventDefault();
@@ -50,9 +47,18 @@ const Products = () => {
     );
 
     // get max price
-    const maxProductPrice = allProducts?.data.reduce((max: number, product: TProduct) => {
-        return product.price > max ? product.price : max;
-    }, 0);
+    // const maxProductPrice = allProducts?.data.reduce((max: number, product: TProduct) => {
+    //     return product.price > max ? product.price : max;
+    // }, 0);
+
+    // reset all functionalities
+    const handleResetAll = () => {
+        setSearchTerm("");
+        setMinPrice(0);
+        setMaxPrice(0);
+        setSort('-price');
+        setCategory("");
+    }
 
 
     return (
@@ -128,28 +134,40 @@ const Products = () => {
                         <div className="w-full flex justify-between items-center gap-12">
                             {/* Min price input */}
                             <Input
-                                defaultValue={minPrice}
+                                defaultValue={minPrice === 0 ? "" : minPrice}
+                                placeholder={minPrice === 0 ? "--" : ""}
                                 onBlur={handleMinPriceBlur}
                             />
                             {/* Max price input */}
                             <Input
-                                defaultValue={maxProductPrice}
+                                defaultValue={maxPrice === 0 ? "" : maxPrice}
+                                placeholder={maxPrice === 0 ? "--" : ""}
                                 onBlur={handleMaxPriceBlur}
                             />
                         </div>
                     </div>
 
                     {/* Reset filter button */}
-                    <Button variant={"large"} className="w-full">
+                    <Button
+                        variant={"large"}
+                        onClick={handleResetAll}
+                        className="w-full">
                         <RiDeleteBin6Line className="text-xl" /> Clear all
                     </Button>
                 </div>
 
                 {/* Products display section */}
                 <div className="w-[75%] px-5 py-10 grid grid-cols-3 gap-x-10 gap-y-12">
-                    {allProducts?.data?.map((product: TProduct, idx: number) => (
-                        <ProductCard key={idx} product={product} />
-                    ))}
+                    {
+                        allProducts?.data.length === 0 ?
+                            <div className="h-screen col-span-3 flex justify-center items-start mt-14">
+                                <p className="font-primary text-xl text-bodyText/70">No products found</p>
+                            </div>
+                            :
+                            allProducts?.data?.map((product: TProduct, idx: number) => (
+                                <ProductCard key={idx} product={product} />
+                            ))
+                    }
                 </div>
             </div>
         </div>
