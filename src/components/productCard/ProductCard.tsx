@@ -9,7 +9,7 @@ type ProductCardProps = {
 const ProductCard = ({ product }: ProductCardProps) => {
 
     // converting name to slug
-    const slug = product?.name.split(" ").join("-").toLowerCase();
+    // const slug = product?.name.split(" ").join("-").toLowerCase();
 
     return (
         <div className="flex flex-col justify-center items-center gap-2 group">
@@ -23,7 +23,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 ${product?.price}
             </p>
 
-            <Link to={`/products/${slug}`}>
+            <Link to={`/products/${product?._id}`}>
                 <Button variant={"outline"}>View Product</Button>
             </Link>
         </div>
