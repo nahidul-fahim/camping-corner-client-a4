@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
 import { TProduct } from "@/types/ProductType";
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
@@ -12,17 +12,14 @@ const Products = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
+    const [sort, setSort] = useState('-price');
+    const [category, setCategory] = useState("");
 
     // Fetching all products initially
-    const { isLoading, data: allProducts } = useGetAllProductsQuery({ searchTerm, minPrice, maxPrice });
+    const { isLoading, data: allProducts } = useGetAllProductsQuery({ searchTerm, minPrice, maxPrice, sort, category });
 
-    // Effect to determine and set the maximum product price from the fetched data
-    useEffect(() => {
-        if (allProducts) {
-            const maxProductPrice = Math.max(...allProducts.data.map((product: TProduct) => product.price) || [0]);
-            setMaxPrice((prevMaxPrice) => (prevMaxPrice === 0 ? maxProductPrice : prevMaxPrice));
-        }
-    }, [allProducts]);
+    console.log("All products", allProducts)
+
 
     // Handle the search term submission
     const handleSearchTerm = (e: FormEvent) => {
@@ -40,6 +37,7 @@ const Products = () => {
         setMaxPrice(Number((e.target as HTMLInputElement).value));
     };
 
+
     // Show loading state if data is not yet loaded
     if (isLoading) {
         return <p>Loading...</p>;
@@ -50,6 +48,12 @@ const Products = () => {
     const categories = allCategories?.filter((item: string, index: number) =>
         allCategories.indexOf(item) === index
     );
+
+    // get max price
+    const maxProductPrice = allProducts?.data.reduce((max: number, product: TProduct) => {
+        return product.price > max ? product.price : max;
+    }, 0);
+
 
     return (
         <div className="flex flex-col justify-start items-start">
@@ -86,8 +90,20 @@ const Products = () => {
                     <div className="w-full flex flex-col justify-start items-start gap-4">
                         <h3 className="font-primary text-xl font-semibold">Sort</h3>
                         <div className="flex flex-col justify-start items-start w-full gap-1">
-                            <Button variant={"gray"}>Price, low to high</Button>
-                            <Button variant={"gray"}>Price, high to low</Button>
+
+                            {/* low to high = price */}
+                            <Button
+                                onClick={() => setSort('price')}
+                                variant={"gray"}>
+                                Price, low to high
+                            </Button>
+
+                            {/* high to low = -price */}
+                            <Button
+                                onClick={() => setSort('-price')}
+                                variant={"gray"}>
+                                Price, high to low
+                            </Button>
                         </div>
                     </div>
 
@@ -96,7 +112,12 @@ const Products = () => {
                         <h3 className="font-primary text-xl font-semibold">Categories</h3>
                         <div className="flex flex-col justify-start items-start w-full gap-1">
                             {categories?.map((category: string, index: number) => (
-                                <Button key={index} variant={"gray"}>{category}</Button>
+                                <Button
+                                    key={index}
+                                    variant={"gray"}
+                                    onClick={() => setCategory(category)}>
+                                    {category}
+                                </Button>
                             ))}
                         </div>
                     </div>
@@ -112,7 +133,7 @@ const Products = () => {
                             />
                             {/* Max price input */}
                             <Input
-                                defaultValue={maxPrice}
+                                defaultValue={maxProductPrice}
                                 onBlur={handleMaxPriceBlur}
                             />
                         </div>

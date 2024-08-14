@@ -9,5 +9,7 @@ const baseQuery = fetchBaseQuery({
 export const baseApi = createApi({
     reducerPath: "baseApi",
     baseQuery: baseQuery,
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
     endpoints: () => ({}),
 })
