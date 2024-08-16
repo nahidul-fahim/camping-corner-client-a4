@@ -4,7 +4,7 @@ const productApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         // get all products
         getAllProducts: builder.query({
-            query: ({ searchTerm, minPrice, maxPrice, sort, category }) => {
+            query: ({ searchTerm = '', minPrice = 0, maxPrice = 0, sort = '', category = '' }) => {
 
                 // Construct the base query string
                 let queryString = `/products?searchTerm=${searchTerm}&minPrice=${minPrice}&sort=${sort}`;
@@ -24,7 +24,7 @@ const productApi = baseApi.injectEndpoints({
                     method: "GET"
                 };
             },
-            keepUnusedDataFor: 0
+            keepUnusedDataFor: 0,
         }),
         // get single product
         getSingleProduct: builder.query({

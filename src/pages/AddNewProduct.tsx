@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import RHFormProvider from "@/components/form/RHFormProvider";
@@ -38,7 +38,8 @@ const AddNewProduct = () => {
                 description: data?.description,
                 category: data?.category,
                 price: Number(data?.price),
-                quantity: Number(data?.quantity)
+                quantity: Number(data?.quantity),
+                rating: Number(data?.rating)
             };
 
             formData.append('data', JSON.stringify(productData));
@@ -97,6 +98,16 @@ const AddNewProduct = () => {
                             placeholder="Product price"
                             label="Product price"
                             minValue={0}
+                            className="w-full"
+                        />
+                        <RHInput
+                            type="number"
+                            name="rating"
+                            placeholder="Product rating"
+                            label="Product rating"
+                            minValue={1}
+                            step={0.1}
+                            maxValue={5}
                             className="w-full"
                         />
                         <RHTextArea

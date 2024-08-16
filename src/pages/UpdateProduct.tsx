@@ -19,6 +19,7 @@ const UpdateProduct = () => {
     const [updateProduct, { isLoading: updateLoading }] = useUpdateProductMutation();
 
     const currentData = data?.data;
+
     useEffect(() => {
         if (currentData) {
             setImagePreview(currentData?.image)
@@ -51,6 +52,7 @@ const UpdateProduct = () => {
                 description: data?.description ?? currentData?.description,
                 price: Number(data?.price ?? currentData?.price),
                 quantity: Number(data?.quantity ?? currentData?.quantity),
+                rating: Number(data?.rating ?? currentData?.rating)
             };
 
             // Append the file
@@ -129,6 +131,17 @@ const UpdateProduct = () => {
                             defaultValue={currentData?.price}
                             label="Product price"
                             minValue={0}
+                            className="w-full"
+                        />
+                        <RHInput
+                            type="number"
+                            name="rating"
+                            placeholder="Product rating"
+                            defaultValue={currentData?.rating}
+                            label="Product rating"
+                            minValue={1}
+                            step={0.1}
+                            maxValue={5}
                             className="w-full"
                         />
                         <RHTextArea

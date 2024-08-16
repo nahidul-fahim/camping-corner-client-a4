@@ -11,12 +11,14 @@ type TInputProps = {
     label?: string;
     className?: string;
     defaultValue?: any;
+    step?: number;
     minValue?: number;
+    maxValue?: number;
     // eslint-disable-next-line no-unused-vars
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const RHInput = ({ type, name, placeholder, label, className, defaultValue, minValue, onChange }: TInputProps) => {
+const RHInput = ({ type, name, placeholder, label, className, defaultValue, step, minValue, maxValue, onChange }: TInputProps) => {
 
     const { control } = useFormContext();
 
@@ -32,7 +34,8 @@ const RHInput = ({ type, name, placeholder, label, className, defaultValue, minV
                         type={type}
                         id={name}
                         min={minValue}
-                        step=".01"
+                        max={maxValue}
+                        step={step ? step : ".01"}
                         placeholder={placeholder}
                         defaultValue={defaultValue}
                         onChange={(e) => {

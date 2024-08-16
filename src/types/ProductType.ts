@@ -7,6 +7,7 @@ export type TProduct = {
     category: string;
     image: string;
     isDeleted: boolean;
+    slug: string;
     createdAt: Date;
     updatedAt: Date
 }

@@ -10,6 +10,7 @@ import OpenModal from "@/components/openModal/OpenModal";
 import { DialogClose } from "@/components/ui/dialog";
 import ErrorComponent from "@/components/error/ErrorComponent";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
 
 type TProduct = Record<string, any>
@@ -19,8 +20,11 @@ const ProductManagement = () => {
 
     const [deleteProduct, { isLoading: isDeleting, isError: isDeleteError }] = useDeleteProductMutation();
     // current data
-    const { error, isLoading, data, refetch } = useGetAllProductsQuery(undefined);
+    const { error, isLoading, data, refetch } = useGetAllProductsQuery("");
 
+    useEffect(() => {
+        refetch();
+    }, [refetch])
 
     // handle delete a product
     const handleDeleteProduct = async (id: string) => {
