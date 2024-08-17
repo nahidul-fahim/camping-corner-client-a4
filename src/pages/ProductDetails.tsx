@@ -36,7 +36,7 @@ const ProductDetails = () => {
                 <span className="flex justify-start items-center gap-1">
                     <p className="text-bodyText/70">Rating:</p>
                     <Rating
-                        style={{ maxWidth: 100 }}
+                        style={{ maxWidth: 80 }}
                         value={product?.rating}
                         readOnly
                     />

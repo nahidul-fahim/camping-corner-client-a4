@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
@@ -36,44 +37,50 @@ const UpdateProduct = () => {
         }
     };
 
+
+
     // submit the updated information
-    const onSubmit = async (data: FieldValues) => {
+    const onSubmit = async (formData: FieldValues) => {
 
         const toastId = toast.loading("Updating product!");
         try {
-
             const updatedData = new FormData();
 
-            const updatedProductData = {
-                ...currentData,
-                ...data,
-                name: data?.name ?? currentData?.name,
-                category: data?.category ?? currentData?.category,
-                description: data?.description ?? currentData?.description,
-                price: Number(data?.price ?? currentData?.price),
-                quantity: Number(data?.quantity ?? currentData?.quantity),
-                rating: Number(data?.rating ?? currentData?.rating)
-            };
+            // Convert relevant fields to numbers and filter out unchanged or undefined fields
+            const updatedProductData = Object.entries(formData).reduce((acc, [key, value]) => {
+                if (value !== undefined) {
+                    if (key === "price" || key === "quantity" || key === "rating") {
+                        const numberValue = Number(value);
+                        if (numberValue !== currentData?.[key]) {
+                            acc[key] = numberValue;
+                        }
+                    } else if (value !== currentData?.[key]) {
+                        acc[key] = value;
+                    }
+                }
+                return acc;
+            }, {} as Record<string, any>);
 
-            // Append the file
+            // Append the image file if it has been changed
             if (productImage) {
-                updatedData.append('file', productImage)
-            }
-            else {
-                updatedProductData.image = currentData?.image
+                updatedData.append('file', productImage);
+            } else if (currentData?.image) {
+                updatedProductData.image = currentData?.image;
             }
 
-            // append the data
-            updatedData.append('data', JSON.stringify(updatedProductData))
+            // Append the filtered data as a JSON string
+            updatedData.append('data', JSON.stringify(updatedProductData));
 
-            // send the formData to api
+            // Send the FormData to the API
             await updateProduct({ id, productInfo: updatedData }).unwrap();
             toast.success("Product updated!", { id: toastId, duration: 2000 });
-            navigate("/product-management")
+            navigate("/product-management");
         } catch (error) {
             toast.error("Something went wrong!", { id: toastId, duration: 2000 });
         }
     };
+
+
 
     // loading component and error component
     if (isLoading) {
