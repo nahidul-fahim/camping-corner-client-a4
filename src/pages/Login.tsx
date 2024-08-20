@@ -1,9 +1,11 @@
 import RHFormProvider from "@/components/form/RHFormProvider";
 import RHInput from "@/components/form/RHInput";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 
 const Login = () => {
@@ -16,10 +18,26 @@ const Login = () => {
         setShowPassword(!showPassword);
     };
 
+    // redux hooks
+    const [login, { isLoading }] = useLoginMutation();
+
 
     // submission
-    const onSubmit = (data: FieldValues) => {
-        console.log(data);
+    const onSubmit = async (data: FieldValues) => {
+        const toastId = toast.loading("Logging in");
+
+        try {
+            const loginInfo = {
+                email: data?.email,
+                password: data?.password,
+            };
+            // send the formData to api
+            const res = await login(loginInfo).unwrap();
+            toast.success("Log in successful!", { id: toastId, duration: 2000 });
+            console.log("Login info here", res)
+        } catch (error) {
+            toast.error("Something went wrong!", { id: toastId, duration: 2000 });
+        }
     }
 
 
@@ -39,7 +57,7 @@ const Login = () => {
             {/* form section */}
             <div className="ml-[40%] container mx-auto p-10 overflow-y-auto flex flex-col justify-center items-start">
                 <h2 className="text-3xl font-primary text-primary font-bold mb-5">Welcome back</h2>
-                <RHFormProvider onSubmit={onSubmit} className="space-y-5 w-full">
+                <RHFormProvider onSubmit={onSubmit} className="space-y-5 w-4/5">
                     <div className="space-y-5 pr-20">
                         <RHInput
                             type="email"
@@ -71,10 +89,9 @@ const Login = () => {
                         <button
                             type="submit"
                             className="border px-3 py-1 self-start bg-primary text-white rounded font-medium hover:bg-secondary duration-300 disabled:bg-primary/60 disabled:cursor-not-allowed"
-                        // disabled={isLoading}
+                            disabled={isLoading}
                         >
-                            {/* {isLoading ? "Creating product" : "Add Product"} */}
-                            Login
+                            {isLoading ? "Logging in" : "Login"}
                         </button>
                     </div>
                 </RHFormProvider>

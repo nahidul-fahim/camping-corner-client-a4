@@ -40,7 +40,7 @@ const Register = () => {
             {/* form section */}
             <div className="ml-[40%] container mx-auto p-10 overflow-y-auto flex flex-col justify-center items-start">
                 <h2 className="text-3xl font-primary text-primary font-bold mb-5">Create New Account</h2>
-                <RHFormProvider onSubmit={onSubmit} className="space-y-5 w-full">
+                <RHFormProvider onSubmit={onSubmit} className="space-y-5 w-4/5">
                     <div className="space-y-5 pr-20">
                         <RHInput
                             type="text"
