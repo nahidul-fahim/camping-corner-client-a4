@@ -12,11 +12,12 @@ const Products = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
-    const [sort, setSort] = useState('-price');
+    const [sort, setSort] = useState('');
     const [category, setCategory] = useState("");
 
     // Fetching all products initially
-    const { isLoading, data: allProducts } = useGetAllProductsQuery({ searchTerm, minPrice, maxPrice, sort, category });
+    const { isLoading, data } = useGetAllProductsQuery({ searchTerm, minPrice, maxPrice, sort, category });
+
 
     // Handle the search term submission
     const handleSearchTerm = (e: FormEvent) => {
@@ -40,23 +41,13 @@ const Products = () => {
         return <p>Loading...</p>;
     }
 
-    // Get unique categories from products
-    const allCategories = allProducts?.data.map((product: TProduct) => product?.category);
-    const categories = allCategories?.filter((item: string, index: number) =>
-        allCategories.indexOf(item) === index
-    );
-
-    // get max price
-    // const maxProductPrice = allProducts?.data.reduce((max: number, product: TProduct) => {
-    //     return product.price > max ? product.price : max;
-    // }, 0);
 
     // reset all functionalities
     const handleResetAll = () => {
         setSearchTerm("");
         setMinPrice(0);
         setMaxPrice(0);
-        setSort('-price');
+        setSort('');
         setCategory("");
     }
 
@@ -100,6 +91,7 @@ const Products = () => {
                             {/* low to high = price */}
                             <Button
                                 onClick={() => setSort('price')}
+                                className={sort === 'price' ? "bg-black/50 text-white" : "bg-customGray/60"}
                                 variant={"gray"}>
                                 Price, low to high
                             </Button>
@@ -107,6 +99,7 @@ const Products = () => {
                             {/* high to low = -price */}
                             <Button
                                 onClick={() => setSort('-price')}
+                                className={sort === '-price' ? "bg-black/50 text-white" : "bg-customGray/60"}
                                 variant={"gray"}>
                                 Price, high to low
                             </Button>
@@ -117,12 +110,13 @@ const Products = () => {
                     <div className="w-full flex flex-col justify-start items-start gap-4">
                         <h3 className="font-primary text-xl font-semibold">Categories</h3>
                         <div className="flex flex-col justify-start items-start w-full gap-1">
-                            {categories?.map((category: string, index: number) => (
+                            {data?.data?.uniqueCategories.map((categoryItem: string, index: number) => (
                                 <Button
                                     key={index}
                                     variant={"gray"}
-                                    onClick={() => setCategory(category)}>
-                                    {category}
+                                    onClick={() => setCategory(categoryItem)}
+                                    className={category === categoryItem ? "bg-black/50 text-white" : "bg-customGray/60"}>
+                                    {categoryItem}
                                 </Button>
                             ))}
                         </div>
@@ -159,12 +153,12 @@ const Products = () => {
                 {/* Products display section */}
                 <div className="w-[75%] px-5 py-10 grid grid-cols-3 gap-x-10 gap-y-12">
                     {
-                        allProducts?.data.length === 0 ?
+                        data?.data?.products.length === 0 ?
                             <div className="h-screen col-span-3 flex justify-center items-start mt-14">
                                 <p className="font-primary text-xl text-bodyText/70">No products found</p>
                             </div>
                             :
-                            allProducts?.data?.map((product: TProduct, idx: number) => (
+                            data?.data?.products.map((product: TProduct, idx: number) => (
                                 <ProductCard key={idx} product={product} />
                             ))
                     }

@@ -46,7 +46,7 @@ const UpdateProduct = () => {
         try {
             const updatedData = new FormData();
 
-            // Convert relevant fields to numbers and filter out unchanged or undefined fields
+            // filter out unchanged fields
             const updatedProductData = Object.entries(formData).reduce((acc, [key, value]) => {
                 if (value !== undefined) {
                     if (key === "price" || key === "quantity" || key === "rating") {

@@ -8,3 +8,8 @@
 * {
     font-family: "DM Sans";
 }
+
+::selection {
+    background-color: #ABFFEA;
+    color: black;
+}

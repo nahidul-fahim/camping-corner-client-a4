@@ -25,7 +25,7 @@ const RHTextArea = ({ name, placeholder, label, className, defaultValue }: TText
                         {...field}
                         placeholder={placeholder}
                         defaultValue={defaultValue}
-                        className={`${className} bg-white`}
+                        className={`${className} bg-offWhite/30`}
                     />
                 }
             />

@@ -66,28 +66,28 @@ const AddNewProduct = () => {
             </div>
 
             {/* form section */}
-            <div className="ml-[40%] container mx-auto p-10 overflow-y-auto bg-offWhite">
+            <div className="ml-[40%] container mx-auto p-10 overflow-y-auto">
                 <h2 className="text-3xl font-primary text-primary font-bold mb-5">Add New Product</h2>
                 <RHFormProvider onSubmit={onSubmit} className="space-y-5">
                     <div className="space-y-5 pr-20">
                         <RHInput
                             type="text"
                             name="name"
-                            placeholder="Product name"
+                            placeholder="Camping tent"
                             label="Product name"
                             className="w-full"
                         />
                         <RHInput
                             type="text"
                             name="category"
-                            placeholder="Product category"
+                            placeholder="shelter"
                             label="Product category"
                             className="w-full"
                         />
                         <RHInput
                             type="number"
                             name="quantity"
-                            placeholder="Product quantity"
+                            placeholder="49"
                             label="Product quantity"
                             minValue={0}
                             className="w-full"
@@ -95,7 +95,7 @@ const AddNewProduct = () => {
                         <RHInput
                             type="number"
                             name="price"
-                            placeholder="Product price"
+                            placeholder="19.99"
                             label="Product price"
                             minValue={0}
                             className="w-full"
@@ -103,7 +103,7 @@ const AddNewProduct = () => {
                         <RHInput
                             type="number"
                             name="rating"
-                            placeholder="Product rating"
+                            placeholder="4.7"
                             label="Product rating"
                             minValue={1}
                             step={0.1}
@@ -112,7 +112,7 @@ const AddNewProduct = () => {
                         />
                         <RHTextArea
                             name="description"
-                            placeholder="Product description"
+                            placeholder="Details about the product goes here"
                             label="Product description"
                             className="w-full"
                         />
