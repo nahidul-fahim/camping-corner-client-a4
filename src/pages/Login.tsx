@@ -1,6 +1,8 @@
 import RHFormProvider from "@/components/form/RHFormProvider";
 import RHInput from "@/components/form/RHInput";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { setUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
@@ -19,6 +21,7 @@ const Login = () => {
     };
 
     // redux hooks
+    const dispatch = useAppDispatch();
     const [login, { isLoading }] = useLoginMutation();
 
 
@@ -33,8 +36,13 @@ const Login = () => {
             };
             // send the formData to api
             const res = await login(loginInfo).unwrap();
+
+            // setting the user to state
+            dispatch(setUser({
+                user: res?.data
+            }))
+
             toast.success("Log in successful!", { id: toastId, duration: 2000 });
-            console.log("Login info here", res)
         } catch (error) {
             toast.error("Something went wrong!", { id: toastId, duration: 2000 });
         }
