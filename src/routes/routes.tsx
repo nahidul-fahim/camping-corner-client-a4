@@ -8,6 +8,7 @@ import Products from "@/pages/Products";
 import ProductDetails from "@/pages/ProductDetails";
 import Register from "@/pages/Register";
 import Login from "@/pages/Login";
+import Cart from "@/pages/Cart";
 
 
 const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: "/update-product/:id",
                 element: <UpdateProduct />
+            },
+            {
+                path: "/cart",
+                element: <Cart />
             },
         ]
     },

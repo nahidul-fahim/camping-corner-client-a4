@@ -12,9 +12,7 @@ import ErrorComponent from "@/components/error/ErrorComponent";
 import { toast } from "sonner";
 import { useEffect } from "react";
 
-
 type TProduct = Record<string, any>
-
 
 const ProductManagement = () => {
 
@@ -112,7 +110,7 @@ const ProductManagement = () => {
     }
 
     return (
-        <div className="p-10 w-full mx-auto flex flex-col justify-start items-start gap-5">
+        <div className="p-10 container mx-auto flex flex-col justify-start items-start gap-5">
             <div className="w-full flex justify-between items-center">
                 <h3 className="font-primary text-3xl font-medium text-primary">Product list</h3>
                 {/* add new product button */}
@@ -123,7 +121,7 @@ const ProductManagement = () => {
             <DataTable
                 // tableName="Product list"
                 tableColumns={tableColumns}
-                tableRows={data?.data} />
+                tableRows={data?.data?.products} />
         </div>
     );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     Table,
@@ -7,6 +8,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import React from "react";
 
 type Column = {
     title: string;
@@ -20,6 +22,7 @@ type TDataTableProps = {
 }
 
 const DataTable = ({ tableName, tableColumns, tableRows }: TDataTableProps) => {
+
     return (
         <div className="w-full mx-auto flex flex-col justify-start items-start gap-5">
             {tableName &&

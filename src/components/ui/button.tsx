@@ -13,6 +13,8 @@ const buttonVariants = cva(
           "bg-primary text-white flex justify-center items-center gap-2 hover:bg-secondary duration-300 font-semibold rounded",
         secondary:
           "bg-secondary text-white shadow-sm hover:bg-secondary/70 duration-300 font-medium rounded flex justify-center items-center gap-2",
+        control:
+          "size-7 text-black border border-bodyText/30 font-semibold hover:bg-secondary hover:text-white duration-200 disabled:text-black/40 disabled:bg-transparent disabled:cursor-not-allowed",
         large:
           "bg-secondary text-white uppercase font-primary shadow-sm hover:bg-secondary/70 duration-300 font-medium rounded flex justify-center items-center gap-2",
         destructive:

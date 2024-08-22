@@ -8,8 +8,12 @@ import { useCreateProductMutation } from "@/redux/features/product/productApi";
 import RHFileSelect from "@/components/form/RHFileSelect";
 
 const AddNewProduct = () => {
+
+    // states
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [productImage, setProductImage] = useState<File | null>(null);
+
+    // create product api
     const [createProduct, { isLoading }] = useCreateProductMutation();
 
     // handle image change
