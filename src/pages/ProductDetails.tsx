@@ -2,11 +2,18 @@ import { useGetSingleProductQuery } from "@/redux/features/product/productApi";
 import { Rating } from "@smastrom/react-rating";
 import { useParams } from "react-router-dom";
 import '@smastrom/react-rating/style.css'
+import { useAppSelector } from "@/redux/hooks";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 
 const ProductDetails = () => {
 
     const { id } = useParams();
     const { isLoading, data } = useGetSingleProductQuery(id);
+
+    // getting the current user
+    const currentUser = useAppSelector(selectCurrentUser);
+
+    console.log("Current user =>", currentUser);
 
     if (isLoading) {
         return <p>Loading...</p>
