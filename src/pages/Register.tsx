@@ -1,9 +1,13 @@
 import RHFormProvider from "@/components/form/RHFormProvider";
 import RHInput from "@/components/form/RHInput";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { setUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 
 
@@ -17,10 +21,31 @@ const Register = () => {
         setShowPassword(!showPassword);
     };
 
+    // redux hooks
+    const dispatch = useAppDispatch();
+    const [register, { isLoading }] = useRegisterMutation();
 
     // submission
-    const onSubmit = (data: FieldValues) => {
-        console.log(data);
+    const onSubmit = async (data: FieldValues) => {
+        const toastId = toast.loading("Creating account");
+        try {
+            const userInfo = {
+                name: data?.name,
+                email: data?.email,
+                password: data?.password,
+            };
+            // send the formData to api
+            const res = await register(userInfo).unwrap();
+
+            // setting the user to state
+            dispatch(setUser({
+                user: res?.data
+            }))
+
+            toast.success("Account creation successful!", { id: toastId, duration: 2000 });
+        } catch (error) {
+            toast.error("Something went wrong!", { id: toastId, duration: 2000 });
+        }
     }
 
 
@@ -79,10 +104,9 @@ const Register = () => {
                         <button
                             type="submit"
                             className="border px-3 py-1 self-start bg-primary text-white rounded font-medium hover:bg-secondary duration-300 disabled:bg-primary/60 disabled:cursor-not-allowed"
-                        // disabled={isLoading}
+                            disabled={isLoading}
                         >
-                            {/* {isLoading ? "Creating product" : "Add Product"} */}
-                            Create Account
+                            {isLoading ? "Creating account..." : "Create Account"}
                         </button>
                     </div>
                 </RHFormProvider>
