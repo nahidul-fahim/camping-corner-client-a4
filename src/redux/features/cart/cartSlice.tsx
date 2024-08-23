@@ -3,7 +3,35 @@ import { RootState } from "@/redux/store";
 import { createSlice } from "@reduxjs/toolkit";
 
 
-const initialState = {
+type TProduct = {
+    _id: string;
+    category: string;
+    description: string;
+    image: string;
+    isDeleted: boolean;
+    name: string;
+    price: number;
+    quantity: number;
+    rating: number;
+    slug: string;
+    updatedAt: Date;
+    createdAt: Date
+}
+
+type TCartItem = {
+    _id: string;
+    user: string;
+    quantity: number;
+    updatedAt: Date;
+    createdAt: Date;
+    product: TProduct;
+}
+
+type TCartState = {
+    items: TCartItem[];
+}
+
+const initialState: TCartState = {
     items: []
 }
 
@@ -13,7 +41,7 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         addCartItems: (state, action) => {
-            console.log("Cart items from slice", action.payload)
+            state.items.push(action.payload.items)
         }
     }
 });

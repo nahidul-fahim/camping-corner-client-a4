@@ -7,7 +7,7 @@ import { useUserCartProductQuery } from "@/redux/features/cart/cartApi";
 import { addCartItems } from "@/redux/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { MdOutlineCancel } from "react-icons/md";
 
 const Cart = () => {
@@ -20,10 +20,12 @@ const Cart = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(addCartItems({
-            items: cartProducts?.data
-        }))
-    }, [cartProducts?.data, dispatch]);
+        if (!isLoading) {
+            dispatch(addCartItems({
+                items: cartProducts?.data
+            }))
+        }
+    }, [cartProducts?.data, dispatch, isLoading]);
 
     // const [quantities, setQuantities] = useState({});
 
