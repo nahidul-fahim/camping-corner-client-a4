@@ -83,7 +83,9 @@ const ProductManagement = () => {
                         description="Are you sure you want to delete the product? You cannot undo this."
                     >
                         <div className="w-full flex justify-end items-center gap-3">
-                            <Button variant={"secondary"}>Cancel</Button>
+                            <DialogClose asChild>
+                                <Button variant={"secondary"}>Cancel</Button>
+                            </DialogClose>
                             {/* delete product modal */}
                             <DialogClose asChild>
                                 <Button

@@ -5,20 +5,16 @@ const productApi = baseApi.injectEndpoints({
         // get all products
         getAllProducts: builder.query({
             query: ({ searchTerm = '', minPrice = 0, maxPrice = 0, sort = '', category = '' }) => {
-
                 // Construct the base query string
                 let queryString = `/products?searchTerm=${searchTerm}&minPrice=${minPrice}&sort=${sort}`;
-
                 // append the maxPrice if it's greater than 0
                 if (maxPrice > 0) {
                     queryString += `&maxPrice=${maxPrice}`;
                 }
-
                 // Append the category if it's not empty
                 if (category) {
                     queryString += `&category=${category}`;
                 }
-
                 return {
                     url: queryString,
                     method: "GET"
