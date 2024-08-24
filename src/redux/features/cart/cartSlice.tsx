@@ -41,12 +41,22 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         addCartItems: (state, action) => {
-            state.items.push(action.payload.items)
-        }
+            state.items.push(...action.payload.items);
+        },
+        updateQuantity: (state, action) => {
+            // Example of finding the item
+            const item = state.items.find(item => item._id === action.payload.cartId);
+            if (item) {
+                const newQuantity = item?.quantity + action.payload.quantity;
+                if (newQuantity >= 1 && newQuantity <= item.product.quantity) {
+                    item.quantity = newQuantity
+                }
+            }
+        },
     }
 });
 
 
-export const { addCartItems } = cartSlice.actions;
+export const { addCartItems, updateQuantity } = cartSlice.actions;
 export default cartSlice.reducer;
 export const selectCartProducts = (state: RootState) => state.cart.items as any;

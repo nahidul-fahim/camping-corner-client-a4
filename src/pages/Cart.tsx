@@ -4,7 +4,7 @@ import DataTable from "@/components/table/DataTable";
 import { Button } from "@/components/ui/button";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useUserCartProductQuery } from "@/redux/features/cart/cartApi";
-import { addCartItems } from "@/redux/features/cart/cartSlice";
+import { addCartItems, updateQuantity } from "@/redux/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useEffect } from "react";
@@ -26,6 +26,12 @@ const Cart = () => {
             }))
         }
     }, [cartProducts?.data, dispatch, isLoading]);
+
+
+    // handle cart quantity
+    const handleCartQuantity = (cartId: string, quantity: number) => {
+        dispatch(updateQuantity({ cartId, quantity }))
+    }
 
     // const [quantities, setQuantities] = useState({});
 
@@ -96,21 +102,22 @@ const Cart = () => {
             title: 'Quantity',
             renderCell: (row) => {
                 console.log("row data =>", row)
-                const productId = row?.product?._id;
-                const productQuantity = row?.quantity as number;
+                const cartQuantity = row?.quantity as number;
                 return (
                     <span className="flex justify-start items-center">
                         {/* decrease */}
                         <button
-                            disabled={productQuantity === 1}
+                            onClick={() => handleCartQuantity(row?._id, -1)}
+                            disabled={cartQuantity === 1}
                             className="size-7 text-black border border-bodyText/30 font-semibold hover:bg-secondary hover:text-white duration-200 disabled:text-black/40 disabled:bg-transparent disabled:cursor-not-allowed">
                             -
                         </button>
                         {/* quantity */}
-                        <p className="border-y border-bodyText/30 h-7 w-10 text-[15px] flex justify-center items-center font-medium">{productQuantity}</p>
+                        <p className="border-y border-bodyText/30 h-7 w-10 text-[15px] flex justify-center items-center font-medium">{cartQuantity}</p>
                         {/* increase */}
                         <button
-                            disabled={productQuantity === row?.product?.quantity}
+                            onClick={() => handleCartQuantity(row?._id, 1)}
+                            disabled={cartQuantity === row?.product?.quantity}
                             className="size-7 text-black border border-bodyText/30 font-semibold hover:bg-secondary hover:text-white duration-200 disabled:text-black/40 disabled:bg-transparent disabled:cursor-not-allowed">
                             +
                         </button>
