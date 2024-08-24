@@ -4,7 +4,7 @@ import DataTable from "@/components/table/DataTable";
 import { Button } from "@/components/ui/button";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useUserCartProductQuery } from "@/redux/features/cart/cartApi";
-import { addCartItems, updateQuantity } from "@/redux/features/cart/cartSlice";
+import { addCartItems, selectCartProducts, updateQuantity } from "@/redux/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useEffect } from "react";
@@ -16,16 +16,17 @@ const Cart = () => {
     const currentUser = userData?.user;
 
     // redux
-    const { error, isLoading, data: cartProducts } = useUserCartProductQuery(currentUser?._id);
+    const { error, isLoading, data: cartData } = useUserCartProductQuery(currentUser?._id);
     const dispatch = useAppDispatch();
+    const allCartProducts = useAppSelector(selectCartProducts);
 
     useEffect(() => {
         if (!isLoading) {
             dispatch(addCartItems({
-                items: cartProducts?.data
+                items: cartData?.data
             }))
         }
-    }, [cartProducts?.data, dispatch, isLoading]);
+    }, [cartData?.data, dispatch, isLoading]);
 
 
     // handle cart quantity
@@ -101,7 +102,6 @@ const Cart = () => {
         {
             title: 'Quantity',
             renderCell: (row) => {
-                console.log("row data =>", row)
                 const cartQuantity = row?.quantity as number;
                 return (
                     <span className="flex justify-start items-center">
@@ -150,7 +150,7 @@ const Cart = () => {
 
             <DataTable
                 tableColumns={tableColumns}
-                tableRows={cartProducts?.data}
+                tableRows={allCartProducts}
             />
         </div>
     );
