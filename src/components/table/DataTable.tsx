@@ -27,7 +27,7 @@ const DataTable = ({ tableName, tableColumns, tableRows }: TDataTableProps) => {
         <div className="w-full mx-auto flex flex-col justify-start items-start gap-5">
             {tableName &&
                 <h3 className="font-primary text-3xl font-medium text-primary">{tableName}</h3>}
-            <Table>
+            <Table className="w-full">
                 <TableHeader>
                     <TableRow className="bg-accent">
                         {

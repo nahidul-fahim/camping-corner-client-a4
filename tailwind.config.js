@@ -24,7 +24,7 @@ module.exports = {
         accent: "#d1e3ff",
         offWhite: "#f0f0f0",
         bodyText: "#5c5c5c",
-        customGray: "#d6d6d6"
+        customGray: "#F2F2F2"
       },
       fontFamily: {
         primary: "Oswald, sans-serif",

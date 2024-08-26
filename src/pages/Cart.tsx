@@ -70,7 +70,21 @@ const Cart = () => {
 
 
     // handle place order
-    
+    const handlePlaceOrder = () => {
+
+        const cartProducts = allCartProducts.map(item => ({
+            cartId: item._id,
+            product: item?.product._id,
+            quantity: item?.quantity
+        }));
+
+        const checkOutDetails = {
+            cartProducts: cartProducts,
+            total: totalPrice,
+        };
+
+        console.log("From place order", checkOutDetails)
+    }
 
 
     // table columns
@@ -175,45 +189,54 @@ const Cart = () => {
         <div className="p-10 container mx-auto flex flex-col justify-start items-start gap-5">
             <h3 className="font-primary text-3xl font-medium text-primary">Cart</h3>
 
-            {/* data table */}
-            <DataTable
-                tableColumns={tableColumns}
-                tableRows={allCartProducts}
-            />
-
-            {/* total price section */}
-            <div className="mt-5 w-full flex justify-end items-center">
-                <div className="w-1/3 p-5 border border-gray-200 rounded shadow-md">
-                    <h4 className="font-semibold text-lg mb-4">Order Summary</h4>
-                    {/* subtotal */}
-                    <div className="flex justify-between items-center mb-2">
-                        <span className="text-gray-600">Subtotal:</span>
-                        <span className="font-medium">${totalPrice}</span>
-                    </div>
-                    {/* tax */}
-                    <div className="flex justify-between items-center mb-2">
-                        <span className="text-gray-600">Shipping:</span>
-                        <span className="font-medium">$0.00</span>
-                    </div>
-                    {/* shipping */}
-                    <div className="flex justify-between items-center mb-2">
-                        <span className="text-gray-600">Tax:</span>
-                        <span className="font-medium">$0.00</span>
-                    </div>
-                    {/* total price */}
-                    <div className="flex justify-between items-center border-t pt-2 mt-2">
-                        <span className="text-black text-lg font-semibold">Total:</span>
-                        <span className="font-bold text-black text-lg">${totalPrice}</span>
-                    </div>
-                    <Button
-                        className="mt-5 w-full"
-                        disabled={isOutOfStock}
-                    // onClick={handlePlaceOrder}
-                    >
-                        Place Order
-                    </Button>
-                    {isOutOfStock && <p className="text-red-500 font-medium text-center text-sm mt-2">Some items are out of stock. Please adjust your cart.</p>}
+            <div className="w-full flex justify-center items-start gap-10">
+                {/* data table */}
+                <div className="w-2/3">
+                    <DataTable
+                        tableColumns={tableColumns}
+                        tableRows={allCartProducts}
+                    />
                 </div>
+
+                {/* total price section */}
+                <div className="w-1/3 flex flex-col justify-start items-start border border-bodyText/30 rounded-lg">
+
+                    <div className="bg-white px-5 py-3 rounded-t-lg">
+                        <h4 className="font-semibold text-lg bg-white">Order Summary</h4>
+                    </div>
+
+                    <div className="bg-customGray flex flex-col justify-start items-start gap-1 w-full p-5 rounded-b-lg">
+                        {/* subtotal */}
+                        <div className="flex justify-between items-center mb-2 w-full">
+                            <span className="text-gray-600">Subtotal:</span>
+                            <span className="font-medium">${totalPrice}</span>
+                        </div>
+                        {/* tax */}
+                        <div className="flex justify-between items-center mb-2 w-full">
+                            <span className="text-gray-600">Shipping:</span>
+                            <span className="font-medium">$0.00</span>
+                        </div>
+                        {/* shipping */}
+                        <div className="flex justify-between items-center mb-2 w-full">
+                            <span className="text-gray-600">Tax:</span>
+                            <span className="font-medium">$0.00</span>
+                        </div>
+                        {/* total price */}
+                        <div className="flex justify-between items-center border-t pt-2 mt-2 w-full">
+                            <span className="text-black text-lg font-semibold">Total:</span>
+                            <span className="font-bold text-black text-lg">${totalPrice}</span>
+                        </div>
+                        <Button
+                            className="mt-5 w-full"
+                            disabled={isOutOfStock}
+                            onClick={handlePlaceOrder}
+                        >
+                            Place Order
+                        </Button>
+                        {isOutOfStock && <p className="text-red-500 font-medium text-center text-sm mt-2">Some items are out of stock. Please adjust your cart.</p>}
+                    </div>
+                </div>
+
             </div>
 
 

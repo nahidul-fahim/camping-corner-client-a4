@@ -38,10 +38,11 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
+        // add to cart
         addCartItems: (state, action) => {
-            // Replace the existing items with the new items
             state.items = action.payload.items;
         },
+        // update cart quantity
         updateQuantity: (state, action) => {
             const item = state.items.find(item => item._id === action.payload.cartId);
             if (item) {
@@ -50,7 +51,7 @@ const cartSlice = createSlice({
                     item.quantity = newQuantity;
                 }
             }
-        },
+        }
     }
 });
 
