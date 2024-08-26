@@ -3,12 +3,14 @@ import OpenModal from "@/components/openModal/OpenModal";
 import DataTable from "@/components/table/DataTable";
 import { Button } from "@/components/ui/button";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
-import { useUserCartProductQuery } from "@/redux/features/cart/cartApi";
+import { useDeleteCartItemMutation, useUserCartProductQuery } from "@/redux/features/cart/cartApi";
 import { addCartItems, selectCartProducts, updateQuantity } from "@/redux/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { MdOutlineCancel } from "react-icons/md";
+import { toast } from "sonner";
+
 
 const Cart = () => {
     // getting the current user
@@ -16,7 +18,11 @@ const Cart = () => {
     const currentUser = userData?.user;
 
     // redux
-    const { error, isLoading, data: cartData } = useUserCartProductQuery(currentUser?._id);
+    const { error, isLoading, data: cartData, refetch } = useUserCartProductQuery(
+        currentUser?._id,
+        { refetchOnMountOrArgChange: true, }
+    );
+    const [deleteCartItem] = useDeleteCartItemMutation();
     const dispatch = useAppDispatch();
     const allCartProducts = useAppSelector(selectCartProducts);
 
@@ -32,18 +38,40 @@ const Cart = () => {
     // handle cart quantity
     const handleCartQuantity = (cartId: string, quantity: number) => {
         dispatch(updateQuantity({ cartId, quantity }))
-    }
+    };
 
-    // const [quantities, setQuantities] = useState({});
+    // handle cart product delete
+    const handleDeleteCartProduct = async (id: string) => {
+        const toastId = toast.loading("Removing cart product!")
+        const result = await deleteCartItem(id).unwrap();
+        if (result?.success) {
+            toast.success(result?.message, { id: toastId, duration: 2000 });
+            refetch();
+        }
+        else {
+            toast.error(result?.message, { id: toastId, duration: 2000 });
+        }
+    };
 
-    // const handleQuantityChange = (productId: string, newQuantity: number, maxQuantity: number) => {
-    //     if (newQuantity >= 1 && newQuantity <= maxQuantity) {
-    //         setQuantities((prevQuantities) => ({
-    //             ...prevQuantities,
-    //             [productId]: newQuantity,
-    //         }));
-    //     }
-    // };
+
+    // handle total price and available quantity status
+    const { totalPrice, isOutOfStock } = useMemo(() => {
+        let total = 0;
+        let outOfStock = false;
+        allCartProducts.forEach(item => {
+            total += item.quantity * item.product.price;
+            if (item.quantity > item.product.quantity) {
+                outOfStock = true;
+            }
+        });
+
+        return { totalPrice: total.toFixed(2), isOutOfStock: outOfStock }
+    }, [allCartProducts])
+
+
+    // handle place order
+    
+
 
     // table columns
     const tableColumns = [
@@ -69,7 +97,7 @@ const Cart = () => {
                             <DialogClose asChild>
                                 <Button
                                     variant={"destructive"}
-                                // onClick={() => handleDeleteProduct(row?._id)}
+                                    onClick={() => handleDeleteCartProduct(row?._id)}
                                 >
                                     Yes! Remove
                                 </Button>
@@ -125,15 +153,14 @@ const Cart = () => {
                 );
             }
         },
-        // {
-        //     title: 'Subtotal',
-        //     renderCell: (row) => {
-        //         const productId = row?.product?._id;
-        //         const productQuantity = 99999;
-        //         const subtotal = productQuantity * row?.product?.price;
-        //         return <span className="font-medium">${subtotal.toFixed(2)}</span>;
-        //     }
-        // },
+        {
+            title: 'Subtotal',
+            renderCell: (row) => {
+                const cartProductQuantity = row?.quantity;
+                const subtotal = cartProductQuantity * row?.product?.price;
+                return <span className="font-medium">${subtotal.toFixed(2)}</span>;
+            }
+        },
     ]
 
     // conditional loading and error
@@ -148,10 +175,48 @@ const Cart = () => {
         <div className="p-10 container mx-auto flex flex-col justify-start items-start gap-5">
             <h3 className="font-primary text-3xl font-medium text-primary">Cart</h3>
 
+            {/* data table */}
             <DataTable
                 tableColumns={tableColumns}
                 tableRows={allCartProducts}
             />
+
+            {/* total price section */}
+            <div className="mt-5 w-full flex justify-end items-center">
+                <div className="w-1/3 p-5 border border-gray-200 rounded shadow-md">
+                    <h4 className="font-semibold text-lg mb-4">Order Summary</h4>
+                    {/* subtotal */}
+                    <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-600">Subtotal:</span>
+                        <span className="font-medium">${totalPrice}</span>
+                    </div>
+                    {/* tax */}
+                    <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-600">Shipping:</span>
+                        <span className="font-medium">$0.00</span>
+                    </div>
+                    {/* shipping */}
+                    <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-600">Tax:</span>
+                        <span className="font-medium">$0.00</span>
+                    </div>
+                    {/* total price */}
+                    <div className="flex justify-between items-center border-t pt-2 mt-2">
+                        <span className="text-black text-lg font-semibold">Total:</span>
+                        <span className="font-bold text-black text-lg">${totalPrice}</span>
+                    </div>
+                    <Button
+                        className="mt-5 w-full"
+                        disabled={isOutOfStock}
+                    // onClick={handlePlaceOrder}
+                    >
+                        Place Order
+                    </Button>
+                    {isOutOfStock && <p className="text-red-500 font-medium text-center text-sm mt-2">Some items are out of stock. Please adjust your cart.</p>}
+                </div>
+            </div>
+
+
         </div>
     );
 };
