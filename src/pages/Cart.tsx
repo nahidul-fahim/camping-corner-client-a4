@@ -80,7 +80,7 @@ const Cart = () => {
 
         const checkOutDetails = {
             cartProducts: cartProducts,
-            total: totalPrice,
+            total: Number(totalPrice),
         };
 
         console.log("From place order", checkOutDetails)
