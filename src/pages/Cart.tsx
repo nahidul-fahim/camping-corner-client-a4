@@ -58,7 +58,7 @@ const Cart = () => {
     const { totalPrice, isOutOfStock } = useMemo(() => {
         let total = 0;
         let outOfStock = false;
-        allCartProducts.forEach(item => {
+        allCartProducts?.forEach(item => {
             total += item.quantity * item.product.price;
             if (item.quantity > item.product.quantity) {
                 outOfStock = true;
@@ -199,7 +199,7 @@ const Cart = () => {
                 </div>
 
                 {/* total price section */}
-                <div className="w-1/3 flex flex-col justify-start items-start border border-bodyText/30 rounded-lg">
+                <div className="w-1/3 flex flex-col justify-start items-start border border-bodyText/10 rounded-lg">
 
                     <div className="bg-white px-5 py-3 rounded-t-lg">
                         <h4 className="font-semibold text-lg bg-white">Order Summary</h4>
