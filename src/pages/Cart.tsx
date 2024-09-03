@@ -78,6 +78,7 @@ const Cart = () => {
     return { totalPrice: total.toFixed(2), isOutOfStock: outOfStock };
   }, [allCartProducts]);
 
+  
   // handle place order
   const handlePlaceOrder = () => {
     const cartProducts = allCartProducts.map((item) => ({
@@ -90,8 +91,6 @@ const Cart = () => {
       cartProducts: cartProducts,
       total: Number(totalPrice),
     };
-
-    console.log("From place order", checkOutDetails);
 
     dispatch(addToCheckout({ checkOutDetails }));
   };

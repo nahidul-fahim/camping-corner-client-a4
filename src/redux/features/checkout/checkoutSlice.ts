@@ -13,9 +13,15 @@ type TCheckout = {
   total: number;
 };
 
-const initialState: TCheckout = {
-  cartProducts: [],
-  total: 0,
+type TCheckoutState = {
+  checkout: TCheckout;
+};
+
+const initialState: TCheckoutState = {
+  checkout: {
+    cartProducts: [],
+    total: 0,
+  },
 };
 
 const checkoutSlice = createSlice({
@@ -24,7 +30,7 @@ const checkoutSlice = createSlice({
   reducers: {
     // add to checkout
     addToCheckout: (state, action) => {
-      console.log("Payload from checkout slice:", action.payload.checkOutDetails);
+      state.checkout = action.payload.checkOutDetails;
     },
   },
 });
