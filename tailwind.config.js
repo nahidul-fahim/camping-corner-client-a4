@@ -19,12 +19,12 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: "#639fff",
-        secondary: "#475f6e",
-        accent: "#d1e3ff",
+        primary: "#cda43b",
+        secondary: "#574c35",
+        accent: "#fff3d6",
         offWhite: "#f0f0f0",
         bodyText: "#5c5c5c",
-        customGray: "#F2F2F2"
+        customGray: "#f5f3f0"
       },
       fontFamily: {
         primary: "Oswald, sans-serif",

@@ -24,15 +24,15 @@ type TCartItem = {
     updatedAt: Date;
     createdAt: Date;
     product: TProduct;
-}
+};
 
 type TCartState = {
     items: TCartItem[];
-}
+};
 
 const initialState: TCartState = {
     items: []
-}
+};
 
 const cartSlice = createSlice({
     name: 'cart',
