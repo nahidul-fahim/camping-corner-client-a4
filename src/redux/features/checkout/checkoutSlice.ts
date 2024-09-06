@@ -4,7 +4,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type TCartProduct = {
   cartId: string;
-  product: string;
+  productId: string;
+  productName: string;
+  productPrice: number;
+  productImage: string;
   quantity: number;
 };
 
@@ -37,5 +40,4 @@ const checkoutSlice = createSlice({
 
 export const { addToCheckout } = checkoutSlice.actions;
 export default checkoutSlice.reducer;
-export const selectCheckoutProducts = (state: RootState) =>
-  state.cart.items as any;
+export const selectCheckoutProducts = (state: RootState) => state.cart.items as any;

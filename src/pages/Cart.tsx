@@ -17,12 +17,14 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useEffect, useMemo } from "react";
 import { MdOutlineCancel } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const Cart = () => {
   // getting the current user
   const userData = useAppSelector(selectCurrentUser);
   const currentUser = userData?.user;
+  const navigate = useNavigate();
 
   // redux
   const {
@@ -78,14 +80,19 @@ const Cart = () => {
     return { totalPrice: total.toFixed(2), isOutOfStock: outOfStock };
   }, [allCartProducts]);
 
-  
+
   // handle place order
   const handlePlaceOrder = () => {
-    const cartProducts = allCartProducts.map((item) => ({
-      cartId: item._id,
-      product: item?.product._id,
-      quantity: item?.quantity,
-    }));
+    const cartProducts = allCartProducts.map((item) => (
+      {
+        cartId: item._id,
+        productId: item?.product._id,
+        productName: item?.product.name,
+        productPrice: item?.product.price,
+        productImage: item?.product.image,
+        quantity: item?.quantity,
+      }
+    ));
 
     const checkOutDetails = {
       cartProducts: cartProducts,
@@ -93,6 +100,7 @@ const Cart = () => {
     };
 
     dispatch(addToCheckout({ checkOutDetails }));
+    navigate("/checkout")
   };
 
   // table columns
