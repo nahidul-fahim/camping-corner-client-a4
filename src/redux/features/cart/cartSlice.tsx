@@ -1,30 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { RootState } from "@/redux/store";
+import { TCartItem } from "@/types/ProductType";
 import { createSlice } from "@reduxjs/toolkit";
-
-type TProduct = {
-    _id: string;
-    category: string;
-    description: string;
-    image: string;
-    isDeleted: boolean;
-    name: string;
-    price: number;
-    quantity: number;
-    rating: number;
-    slug: string;
-    updatedAt: Date;
-    createdAt: Date
-}
-
-type TCartItem = {
-    _id: string;
-    user: string;
-    quantity: number;
-    updatedAt: Date;
-    createdAt: Date;
-    product: TProduct;
-};
 
 type TCartState = {
     items: TCartItem[];

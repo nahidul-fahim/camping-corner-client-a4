@@ -14,6 +14,7 @@ import {
 } from "@/redux/features/cart/cartSlice";
 import { addToCheckout } from "@/redux/features/checkout/checkoutSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { TCartItem } from "@/types/ProductType";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useEffect, useMemo } from "react";
 import { MdOutlineCancel } from "react-icons/md";
@@ -70,7 +71,7 @@ const Cart = () => {
   const { totalPrice, isOutOfStock } = useMemo(() => {
     let total = 0;
     let outOfStock = false;
-    allCartProducts?.forEach((item) => {
+    allCartProducts?.forEach((item: TCartItem) => {
       total += item.quantity * item.product.price;
       if (item.quantity > item.product.quantity) {
         outOfStock = true;
@@ -83,10 +84,10 @@ const Cart = () => {
 
   // handle place order
   const handlePlaceOrder = () => {
-    const cartProducts = allCartProducts.map((item) => (
+    const cartProducts = allCartProducts.map((item: TCartItem) => (
       {
         cartId: item._id,
-        productId: item?.product._id,
+        product: item?.product._id,
         productName: item?.product.name,
         productPrice: item?.product.price,
         productImage: item?.product.image,
@@ -94,12 +95,13 @@ const Cart = () => {
       }
     ));
 
-    const checkOutDetails = {
+    const checkoutDetails = {
       cartProducts: cartProducts,
       total: Number(totalPrice),
+      userId: currentUser?._id
     };
 
-    dispatch(addToCheckout({ checkOutDetails }));
+    dispatch(addToCheckout({ checkoutDetails }));
     navigate("/checkout")
   };
 
@@ -107,7 +109,7 @@ const Cart = () => {
   const tableColumns = [
     {
       title: "",
-      renderCell: (row) => (
+      renderCell: (row: TCartItem) => (
         <span className="flex justify-center items-center text-xl w-full">
           {/* delete button */}
           <OpenModal
@@ -139,11 +141,11 @@ const Cart = () => {
     },
     {
       title: "Serial",
-      renderCell: (_row, rowIdx) => <span>{rowIdx + 1}</span>,
+      renderCell: (_row: TCartItem, rowIdx: number) => <span>{rowIdx + 1}</span>,
     },
     {
       title: "Image",
-      renderCell: (row) => (
+      renderCell: (row: TCartItem) => (
         <img
           src={row?.product?.image}
           alt={row?.product?.name}
@@ -153,7 +155,7 @@ const Cart = () => {
     },
     {
       title: "Product",
-      renderCell: (row) => (
+      renderCell: (row: TCartItem) => (
         <span className="flex justify-center items-center w-fit">
           {row?.product?.name}
         </span>
@@ -161,13 +163,13 @@ const Cart = () => {
     },
     {
       title: "Price",
-      renderCell: (row) => (
+      renderCell: (row: TCartItem) => (
         <span className="font-medium">${row?.product?.price}</span>
       ),
     },
     {
       title: "Quantity",
-      renderCell: (row) => {
+      renderCell: (row: TCartItem) => {
         const cartQuantity = row?.quantity as number;
         return (
           <span className="flex justify-start items-center">
@@ -197,7 +199,7 @@ const Cart = () => {
     },
     {
       title: "Subtotal",
-      renderCell: (row) => {
+      renderCell: (row: TCartItem) => {
         const cartProductQuantity = row?.quantity;
         const subtotal = cartProductQuantity * row?.product?.price;
         return <span className="font-medium">${subtotal.toFixed(2)}</span>;
@@ -215,7 +217,7 @@ const Cart = () => {
 
   return (
     <div className="p-10 container mx-auto flex flex-col justify-start items-start gap-5">
-      <h3 className="font-primary text-3xl font-medium text-primary">Cart</h3>
+      <h1 className="font-primary text-3xl font-medium text-primary">Cart</h1>
 
       <div className="w-full flex justify-center items-start gap-10">
         {/* data table */}

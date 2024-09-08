@@ -11,3 +11,13 @@ export type TProduct = {
     createdAt: Date;
     updatedAt: Date
 }
+
+
+export type TCartItem = {
+    _id: string;
+    user: string;
+    quantity: number;
+    updatedAt: Date;
+    createdAt: Date;
+    product: TProduct;
+};

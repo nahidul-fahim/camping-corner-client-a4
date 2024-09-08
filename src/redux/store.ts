@@ -15,21 +15,28 @@ import {
     REGISTER,
 } from "redux-persist";
 
-
-const persistConfig = {
+// auth persist config
+const authPersistConfig = {
     key: 'auth',
     storage
 }
 
-const persistAuthReducer = persistReducer(persistConfig, authReducer);
+// checkout persist config
+const checkoutPersistConfig = {
+    key: 'checkout',
+    storage
+}
 
+// persist reducers
+const persistAuthReducer = persistReducer(authPersistConfig, authReducer);
+const persistCheckoutReducer = persistReducer(checkoutPersistConfig, checkoutReducer);
 
 export const store = configureStore({
     reducer: {
         [baseApi.reducerPath]: baseApi.reducer,
         auth: persistAuthReducer,
         cart: cartReducer,
-        checkout: checkoutReducer,
+        checkout: persistCheckoutReducer,
 
     },
     middleware: (getDefaultMiddlewares) =>
