@@ -13,3 +13,30 @@
     background-color: #ffeab8;
     color: black;
 }
+
+/* button hover and active style using ::after and ::before */
+.menu-link::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 0;
+    transition: all 0.4s ease-in;
+    background-color: #cda43b;
+}
+
+.menu-link:hover::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: #cda43b;
+}
+
+.active-menu-link::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 100%;
+    transition: all 0.4s ease-in;
+    background-color: #cda43b;
+}

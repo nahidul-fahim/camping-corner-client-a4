@@ -6,7 +6,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 
@@ -14,6 +14,7 @@ const Login = () => {
 
     // states
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
     // handle show password
     const handleShowPassword = () => {
@@ -37,12 +38,16 @@ const Login = () => {
             // send the formData to api
             const res = await login(loginInfo).unwrap();
 
-            // setting the user to state
-            dispatch(setUser({
-                user: res?.data
-            }))
-
-            toast.success("Log in successful!", { id: toastId, duration: 2000 });
+            if (res?.success) {
+                navigate("/")
+                // setting the user to state
+                dispatch(setUser({
+                    user: res?.data
+                }));
+                toast.success("Log in successful!", { id: toastId, duration: 2000 });
+            } else {
+                toast.error(res?.message, { id: toastId, duration: 2000 });
+            }
         } catch (error) {
             toast.error("Something went wrong!", { id: toastId, duration: 2000 });
         }
