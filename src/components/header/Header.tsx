@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
 import CustomDropdown from "../customDropDown/CustomDropDown";
 
-
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userData = useAppSelector(selectCurrentUser);
@@ -107,27 +106,34 @@ const Header = () => {
           <div className="w-full md:hidden mt-4 absolute bg-white top-8 left-[50%] translate-x-[-50%] px-5 py-5">
             <div className="flex flex-col gap-4">
               {navMenu}
-              <div className="flex items-center justify-between mt-4">
+              <Link to="/cart" className="flex items-center gap-2">
                 <FaCartShopping className="text-bodyText text-xl" />
+                <span>Cart</span>
+              </Link>
+              <Link to="/wishlist" className="flex items-center gap-2">
                 <FaHeart className="text-bodyText text-xl" />
-                {currentUser ? (
-                  <Button onClick={handleLogout}>Logout</Button>
-                ) : (
-                  <Link to={"/login"}>
-                    <Button>Login</Button>
-                  </Link>
-                )}
-              </div>
-              <CustomDropdown
-                trigger={
-                  <button className="focus:outline-none flex items-center gap-2">
-                    <FaCircleUser className="text-2xl" />
-                    <span>{currentUser?.name || "User Menu"}</span>
-                  </button>
-                }
-                label={currentUser?.name}
-                menuGroup={adminLinks}
-              />
+                <span>Wishlist</span>
+              </Link>
+              {currentUser && (
+                <>
+                  {adminLinks.map((link, index) => (
+                    <Link key={index} to={link.link} className="flex items-center gap-2">
+                      <span>{link.name}</span>
+                    </Link>
+                  ))}
+                </>
+              )}
+              {currentUser ? (
+                <button onClick={handleLogout} className="flex items-center gap-2">
+                  <FaCircleUser className="text-bodyText text-xl" />
+                  <span>Logout</span>
+                </button>
+              ) : (
+                <Link to="/login" className="flex items-center gap-2">
+                  <FaCircleUser className="text-bodyText text-xl" />
+                  <span>Login</span>
+                </Link>
+              )}
             </div>
           </div>
         )}
