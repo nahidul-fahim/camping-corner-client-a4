@@ -1,107 +1,139 @@
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import logo from "/public/logo/logo.png";
-import { FaCartShopping, FaHeart, FaCircleUser } from "react-icons/fa6";
+import { FaCartShopping, FaHeart, FaCircleUser, FaBars } from "react-icons/fa6";
 import { Button } from "../ui/button";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
-import CustomDropdown from "../curtomDropdown/CurstomDropdown";
+import CustomDropdown from "../customDropDown/CustomDropDown";
 
 
 const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const userData = useAppSelector(selectCurrentUser);
+  const currentUser = userData?.user;
+  const dispatch = useAppDispatch();
 
-    // getting the current user
-    const userData = useAppSelector(selectCurrentUser);
-    const currentUser = userData?.user;
-    const dispatch = useAppDispatch();
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
-    console.log("Current user =>", currentUser)
+  const adminLinks = [
+    { name: "Product management", link: "/product-management" },
+    { name: "Add product", link: "/add-product" },
+  ];
 
-    // handle logout
-    const handleLogout = () => {
-        dispatch(logout());
-    }
-
-
-    // navigation menu
-    const navMenu = <>
-        <NavLink
-            to={"/"}
-            className={({ isActive }) => {
-                return isActive ? "active-menu-link font-primary" : "menu-link font-primary"
-            }}>
-            Home
-        </NavLink>
-
-        <NavLink
-            to={"/products"}
-            className={({ isActive }) => {
-                return isActive ? "active-menu-link font-primary" : "menu-link font-primary"
-            }}>
-            Products
-        </NavLink>
-
-        <NavLink
-            to={"/about"}
-            className={({ isActive }) => {
-                return isActive ? "active-menu-link font-primary" : "menu-link font-primary"
-            }}>
-            About
-        </NavLink>
+  const navMenu = (
+    <>
+      <NavLink
+        to={"/"}
+        className={({ isActive }) =>
+          isActive
+            ? "active-menu-link font-primary"
+            : "menu-link font-primary"
+        }
+      >
+        Home
+      </NavLink>
+      <NavLink
+        to={"/products"}
+        className={({ isActive }) =>
+          isActive
+            ? "active-menu-link font-primary"
+            : "menu-link font-primary"
+        }
+      >
+        Products
+      </NavLink>
+      <NavLink
+        to={"/about"}
+        className={({ isActive }) =>
+          isActive
+            ? "active-menu-link font-primary"
+            : "menu-link font-primary"
+        }
+      >
+        About
+      </NavLink>
     </>
+  );
 
-
-
-    return (
-        <div className="w-full flex justify-center items-center px-5 py-2">
-            <div className="container mx-auto flex justify-center items-center">
-                {/* logo */}
-                <div className="w-1/4">
-                    <Link to={"/"}>
-                        <img
-                            src={logo}
-                            alt="logo"
-                            className="w-[50%]"
-                        />
-                    </Link>
-                </div>
-
-                {/* nav link */}
-                <div className="w-2/4 flex justify-center items-center gap-8">
-                    {navMenu}
-                </div>
-
-                {/* cart icon */}
-                <div className="w-1/4 flex justify-end items-center gap-7">
-                    <FaCartShopping className="text-bodyText text-xl" />
-                    <FaHeart className="text-bodyText text-xl" />
-                    {
-                        currentUser ?
-                            <Button
-                                onClick={handleLogout}
-                            >
-                                Logout
-                            </Button>
-                            :
-                            <Link to={"/login"}>
-                                <Button>
-                                    Login
-                                </Button>
-                            </Link>
-                    }
-
-
-                    <CustomDropdown
-                        trigger={
-                            <button>
-                                <FaCircleUser className="text-3xl text-bodyText" />
-                            </button>
-                        }
-                    />
-
-                </div>
-            </div>
+  return (
+    <div className="w-full flex justify-center items-center lg:px-5 py-2 z-[99] bg-white relative">
+      <div className="container mx-auto flex flex-wrap justify-between items-center z-[98] bg-white">
+        {/* Logo */}
+        <div className="flex items-center">
+          <Link to={"/"}>
+            <img src={logo} alt="logo" className="w-24 md:w-32" />
+          </Link>
         </div>
-    );
+
+        {/* Mobile menu button */}
+        <div className="md:hidden">
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <FaBars className="text-2xl" />
+          </button>
+        </div>
+
+        {/* Nav links for desktop */}
+        <div className="hidden md:flex justify-center items-center gap-8">
+          {navMenu}
+        </div>
+
+        {/* Cart, heart, login/logout for desktop */}
+        <div className="hidden md:flex items-center gap-7">
+          <FaCartShopping className="text-bodyText text-xl" />
+          <FaHeart className="text-bodyText text-xl" />
+          {currentUser ? (
+            <Button onClick={handleLogout}>Logout</Button>
+          ) : (
+            <Link to={"/login"}>
+              <Button>Login</Button>
+            </Link>
+          )}
+          <CustomDropdown
+            trigger={
+              <button className="focus:outline-none">
+                <FaCircleUser className="text-3xl hover:scale-105 duration-300" />
+              </button>
+            }
+            label={currentUser?.name}
+            menuGroup={adminLinks}
+          />
+        </div>
+
+        {/* Mobile menu */}
+        {isMenuOpen && (
+          <div className="w-full md:hidden mt-4 absolute bg-white top-8 left-[50%] translate-x-[-50%] px-5 py-5">
+            <div className="flex flex-col gap-4">
+              {navMenu}
+              <div className="flex items-center justify-between mt-4">
+                <FaCartShopping className="text-bodyText text-xl" />
+                <FaHeart className="text-bodyText text-xl" />
+                {currentUser ? (
+                  <Button onClick={handleLogout}>Logout</Button>
+                ) : (
+                  <Link to={"/login"}>
+                    <Button>Login</Button>
+                  </Link>
+                )}
+              </div>
+              <CustomDropdown
+                trigger={
+                  <button className="focus:outline-none flex items-center gap-2">
+                    <FaCircleUser className="text-2xl" />
+                    <span>{currentUser?.name || "User Menu"}</span>
+                  </button>
+                }
+                label={currentUser?.name}
+                menuGroup={adminLinks}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Header;

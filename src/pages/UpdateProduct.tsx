@@ -93,7 +93,7 @@ const UpdateProduct = () => {
 
     return (
         <div className="relative flex min-h-[100vh]">
-            <div className="fixed top-0 left-0 h-full w-2/5"
+            <div className="fixed top-0 left-0 h-full w-2/5 z-[-10]"
                 style={{
                     backgroundImage: "url('/bg/bgHill1.webp')",
                     backgroundPosition: 'center',
@@ -102,7 +102,7 @@ const UpdateProduct = () => {
                 }}>
             </div>
 
-            <div className="ml-[40%] container mx-auto p-10 overflow-y-auto bg-offWhite">
+            <div className="ml-[40%] container mx-auto p-10 overflow-y-auto bg-white">
                 <h2 className="text-3xl font-primary text-primary font-bold mb-5">Update Product</h2>
                 <RHFormProvider onSubmit={onSubmit} className="space-y-5">
                     <div className="space-y-5 pr-20">

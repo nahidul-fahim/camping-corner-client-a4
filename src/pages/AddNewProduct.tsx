@@ -60,7 +60,7 @@ const AddNewProduct = () => {
         <div className="relative flex min-h-[100vh]">
 
             {/* image section */}
-            <div className="fixed top-0 left-0 h-full w-2/5"
+            <div className="fixed top-0 left-0 h-full w-2/5 z-[-10]"
                 style={{
                     backgroundImage: "url('/bg/bgHill.webp')",
                     backgroundPosition: 'center',
