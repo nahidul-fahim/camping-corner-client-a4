@@ -38,8 +38,6 @@ const UpdateProduct = () => {
         }
     };
 
-
-
     // submit the updated information
     const onSubmit = async (formData: FieldValues) => {
 
@@ -81,8 +79,6 @@ const UpdateProduct = () => {
         }
     };
 
-
-
     // loading component and error component
     if (isLoading) {
         return <LoadingComponent />
@@ -91,10 +87,9 @@ const UpdateProduct = () => {
         return <ErrorComponent />
     }
 
-
     return (
-        <div className="relative flex min-h-[100vh]">
-            <div className="fixed top-0 left-0 h-full w-2/5 z-[-10]"
+        <div className="relative flex flex-col md:flex-row min-h-[100vh]">
+            <div className="md:fixed top-0 left-0 h-40 md:h-full w-full md:w-2/5 z-[-10]"
                 style={{
                     backgroundImage: "url('/bg/bgHill1.webp')",
                     backgroundPosition: 'center',
@@ -103,10 +98,10 @@ const UpdateProduct = () => {
                 }}>
             </div>
 
-            <div className="ml-[40%] container mx-auto p-10 overflow-y-auto bg-white">
-                <h2 className="text-3xl font-primary text-primary font-bold mb-5">Update Product</h2>
+            <div className="md:ml-[40%] container mx-auto p-5 md:p-10 bg-white">
+                <h2 className="text-2xl md:text-3xl font-primary text-primary font-bold mb-5">Update Product</h2>
                 <RHFormProvider onSubmit={onSubmit} className="space-y-5">
-                    <div className="space-y-5 pr-20">
+                    <div className="space-y-5 pr-0 md:pr-20">
                         <RHInput
                             type="text"
                             name="name"
@@ -130,6 +125,7 @@ const UpdateProduct = () => {
                             defaultValue={currentData?.quantity}
                             label="Product quantity"
                             minValue={0}
+                            step={1}
                             className="w-full"
                         />
                         <RHInput
@@ -155,7 +151,7 @@ const UpdateProduct = () => {
                         <RHTextArea
                             name="description"
                             placeholder="Product description"
-                            defaultValue={currentData?.name}
+                            defaultValue={currentData?.description}
                             label="Product description"
                             className="w-full"
                         />

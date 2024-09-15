@@ -13,67 +13,61 @@ import { toast } from "sonner";
 import { useEffect } from "react";
 import LoadingComponent from "@/components/loadingComponent/LoadingComponent";
 
-type TProduct = Record<string, any>
+type TProduct = Record<string, any>;
 
 const ProductManagement = () => {
-
     const [deleteProduct, { isLoading: isDeleting, isError: isDeleteError }] = useDeleteProductMutation();
-    // current data
     const { error, isLoading, data, refetch } = useGetAllProductsQuery("");
 
     useEffect(() => {
         refetch();
-    }, [refetch])
+    }, [refetch]);
 
-    // handle delete a product
     const handleDeleteProduct = async (id: string) => {
         const toastId = toast.loading("Deleting product!");
         const result = await deleteProduct(id).unwrap();
         if (result?.success) {
             toast.success(result?.message, { id: toastId, duration: 2000 });
             refetch();
-        }
-        else {
+        } else {
             toast.error(result?.message, { id: toastId, duration: 2000 });
         }
-    }
+    };
 
-    // table columns
     const tableColumns = [
         {
             title: 'Serial',
-            renderCell: (_row: TProduct, rowIdx: number) => <span>{rowIdx + 1}</span>
+            renderCell: (_row: TProduct, rowIdx: number) => <span>{rowIdx + 1}</span>,
         },
         {
             title: 'Image',
-            renderCell: (row: TProduct) =>
+            renderCell: (row: TProduct) => (
                 <img
                     src={row?.image}
                     alt={row?.name}
-                    className="size-[60px] rounded"
+                    className="w-14 h-14 object-cover rounded"
                 />
+            ),
         },
         {
             title: 'Product',
-            renderCell: (row: TProduct) => <span>{row.name}</span>
+            renderCell: (row: TProduct) => <span>{row.name}</span>,
         },
         {
             title: 'Category',
-            renderCell: (row: TProduct) => <span>{row.category}</span>
+            renderCell: (row: TProduct) => <span>{row.category}</span>,
         },
         {
             title: 'Price',
-            renderCell: (row: TProduct) => <span className="font-medium">${row.price}</span>
+            renderCell: (row: TProduct) => <span className="font-medium">${row.price}</span>,
         },
         {
             title: 'Actions',
-            renderCell: (row: TProduct) =>
-                <span className=" flex justify-start items-center gap-3 text-xl">
-                    {/* update product */}
+            renderCell: (row: TProduct) => (
+                <span className="flex justify-start items-center gap-3 text-xl">
                     <Link to={`/update-product/${row?._id}`}>
                         <CiEdit className="text-slate-700 hover:text-slate-400 duration-200" />
                     </Link>
-                    {/* delete button */}
                     <OpenModal
                         trigger={
                             <button>
@@ -87,7 +81,6 @@ const ProductManagement = () => {
                             <DialogClose asChild>
                                 <Button variant={"secondary"}>Cancel</Button>
                             </DialogClose>
-                            {/* delete product modal */}
                             <DialogClose asChild>
                                 <Button
                                     disabled={isDeleting}
@@ -100,31 +93,31 @@ const ProductManagement = () => {
                         </div>
                     </OpenModal>
                 </span>
+            ),
         },
-    ]
+    ];
 
-
-    // loading and conditional data
     if (isLoading) {
-        return <LoadingComponent />
+        return <LoadingComponent />;
     }
     if (error || isDeleteError) {
-        return <ErrorComponent />
+        return <ErrorComponent />;
     }
 
     return (
-        <div className="p-10 container mx-auto flex flex-col justify-start items-start gap-5">
-            <div className="w-full flex justify-between items-center">
-                <h3 className="font-primary text-3xl font-medium text-primary">Product list</h3>
-                {/* add new product button */}
+        <div className="p-5 lg:p-10 container mx-auto flex flex-col justify-start items-start gap-5">
+            <div className="w-full flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                <h3 className="font-primary text-2xl lg:text-3xl font-medium text-primary">Product list</h3>
                 <Link to={"/add-product"}>
-                    <Button><FaPlus /> Add new product</Button>
+                    <Button className="w-full lg:w-auto flex justify-center items-center">
+                        <FaPlus /> Add new product
+                    </Button>
                 </Link>
             </div>
             <DataTable
-                // tableName="Product list"
                 tableColumns={tableColumns}
-                tableRows={data?.data?.products} />
+                tableRows={data?.data?.products}
+            />
         </div>
     );
 };
