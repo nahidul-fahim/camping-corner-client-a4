@@ -20,6 +20,7 @@ import ErrorComponent from "@/components/error/ErrorComponent";
 import OpenModal from "@/components/openModal/OpenModal";
 import DataTable from "@/components/table/DataTable";
 import { Button } from "@/components/ui/button";
+import LoadingComponent from '@/components/loadingComponent/LoadingComponent';
 
 const Cart = () => {
   const userData = useAppSelector(selectCurrentUser);
@@ -196,7 +197,7 @@ const Cart = () => {
     return <ErrorComponent />;
   }
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <LoadingComponent />
   }
 
   return (

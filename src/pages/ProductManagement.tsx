@@ -11,6 +11,7 @@ import { DialogClose } from "@/components/ui/dialog";
 import ErrorComponent from "@/components/error/ErrorComponent";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import LoadingComponent from "@/components/loadingComponent/LoadingComponent";
 
 type TProduct = Record<string, any>
 
@@ -105,7 +106,7 @@ const ProductManagement = () => {
 
     // loading and conditional data
     if (isLoading) {
-        return <p>Loading....</p>
+        return <LoadingComponent />
     }
     if (error || isDeleteError) {
         return <ErrorComponent />

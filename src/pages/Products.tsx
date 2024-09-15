@@ -1,3 +1,4 @@
+import LoadingComponent from "@/components/loadingComponent/LoadingComponent";
 import ProductCard from "@/components/productCard/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,7 +40,7 @@ const Products = () => {
 
     // Show loading state if data is not yet loaded
     if (isLoading) {
-        return <p>Loading...</p>;
+        return <LoadingComponent />
     }
 
 

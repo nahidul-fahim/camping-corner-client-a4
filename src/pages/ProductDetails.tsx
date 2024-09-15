@@ -7,6 +7,7 @@ import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useAddNewCartItemMutation } from "@/redux/features/cart/cartApi";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import LoadingComponent from "@/components/loadingComponent/LoadingComponent";
 
 const ProductDetails = () => {
 
@@ -24,7 +25,7 @@ const ProductDetails = () => {
     const currentUser = userData?.user;
 
     if (isLoading) {
-        return <p>Loading...</p>
+        return <LoadingComponent />
     }
 
     // getting current product

@@ -9,6 +9,7 @@ import { useGetSingleProductQuery, useUpdateProductMutation } from "@/redux/feat
 import RHFileSelect from "@/components/form/RHFileSelect";
 import { useNavigate, useParams } from "react-router-dom";
 import ErrorComponent from "@/components/error/ErrorComponent";
+import LoadingComponent from "@/components/loadingComponent/LoadingComponent";
 
 const UpdateProduct = () => {
 
@@ -84,7 +85,7 @@ const UpdateProduct = () => {
 
     // loading component and error component
     if (isLoading) {
-        return <p>Loading...</p>
+        return <LoadingComponent />
     }
     if (error) {
         return <ErrorComponent />
