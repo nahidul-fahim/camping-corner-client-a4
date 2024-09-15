@@ -11,6 +11,7 @@ import Login from "@/pages/Login";
 import Cart from "@/pages/Cart";
 import Checkout from "@/pages/Checkout";
 import SuccessPage from "@/pages/SuccessPage";
+import About from "@/pages/About";
 
 
 const router = createBrowserRouter([
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Home />
+            },
+            {
+                path: "/about",
+                element: <About />
             },
             {
                 path: "/products",

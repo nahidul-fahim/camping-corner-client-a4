@@ -81,7 +81,10 @@ const Header = () => {
 
         {/* Cart, heart, login/logout for desktop */}
         <div className="hidden md:flex items-center gap-7">
-          <FaCartShopping className="text-bodyText text-xl" />
+          {/* cart */}
+          <Link to={"/cart"}>
+            <FaCartShopping className="text-bodyText text-xl" />
+          </Link>
           <FaHeart className="text-bodyText text-xl" />
           {currentUser ? (
             <Button onClick={handleLogout}>Logout</Button>

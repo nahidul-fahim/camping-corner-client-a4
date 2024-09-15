@@ -6,6 +6,7 @@ import { TProduct } from "@/types/ProductType";
 import { FormEvent, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { NavLink } from "react-router-dom"; // Assuming you are using react-router-dom
 
 const Products = () => {
     // State for searchTerm, minPrice, and maxPrice
@@ -55,15 +56,22 @@ const Products = () => {
     return (
         <div className="flex flex-col justify-start items-start">
             {/* Title section */}
-            <div className="w-full h-[300px] flex justify-center items-center bg-slate-300"
+            <div className="w-full h-[300px] flex flex-col justify-center items-start bg-slate-300 px-10 py-5"
                 style={{
-                    backgroundImage: "linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('/public/bg/bg3.webp')",
+                    backgroundImage: "linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('/public/bg/bg3.webp')",
                     backgroundPosition: 'center center',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundAttachment: 'fixed'
                 }}>
-                <h3 className="font-primary text-5xl font-semibold text-primary">Products</h3>
+                <h1 className="font-primary text-left text-5xl font-semibold text-primary">Products</h1>
+
+                {/* Breadcrumb section */}
+                <nav className="flex text-sm text-bodyText mt-4 font-medium">
+                    <NavLink to="/" className=" hover:text-primary duration-200">Home</NavLink>
+                    <span className="mx-2">/</span>
+                    <span className="text-gray-500">Products</span>
+                </nav>
             </div>
 
             {/* Main content section */}
