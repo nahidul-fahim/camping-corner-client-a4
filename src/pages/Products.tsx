@@ -67,7 +67,7 @@ const Products = () => {
             </div>
 
             {/* Main content section */}
-            <div className="container mx-auto flex flex-col lg:flex-row justify-between items-stretch h-full lg:gap-8">
+            <div className="container mx-auto flex flex-col lg:flex-row justify-between items-stretch h-full gap-5 lg:gap-8">
                 {/* Filter toggle button for mobile/tablet */}
                 <div className="lg:hidden w-full px-5 py-4">
                     <Button
@@ -94,7 +94,7 @@ const Products = () => {
                     </form>
 
                     {/* Sorting options */}
-                    <div className="w-full flex flex-col justify-start items-start gap-4">
+                    <div className="w-full flex flex-col justify-start items-start gap-4 mt-4">
                         <h3 className="font-primary text-xl font-semibold">Sort</h3>
                         <div className="flex flex-col justify-start items-start w-full gap-1">
                             <Button
@@ -113,7 +113,7 @@ const Products = () => {
                     </div>
 
                     {/* Category filters */}
-                    <div className="w-full flex flex-col justify-start items-start gap-4">
+                    <div className="w-full flex flex-col justify-start items-start gap-4 mt-4">
                         <h3 className="font-primary text-xl font-semibold">Categories</h3>
                         <div className="flex flex-col justify-start items-start w-full gap-1">
                             {data?.data?.uniqueCategories.map((categoryItem: string, index: number) => (
@@ -129,7 +129,7 @@ const Products = () => {
                     </div>
 
                     {/* Price range filter */}
-                    <div className="w-full flex flex-col justify-start items-start gap-4">
+                    <div className="w-full flex flex-col justify-start items-start gap-4 mt-4">
                         <h3 className="font-primary text-xl font-semibold">Price</h3>
                         <div className="w-full flex justify-between items-center gap-12">
                             <Input
@@ -149,7 +149,7 @@ const Products = () => {
                     <Button
                         variant={"large"}
                         onClick={handleResetAll}
-                        className="w-full">
+                        className="w-full mt-4">
                         <RiDeleteBin6Line className="text-xl" /> Clear all
                     </Button>
                 </div>
