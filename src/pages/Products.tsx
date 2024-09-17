@@ -1,63 +1,54 @@
+import { useState } from "react";
 import LoadingComponent from "@/components/loadingComponent/LoadingComponent";
 import ProductCard from "@/components/productCard/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
 import { TProduct } from "@/types/ProductType";
-import { FormEvent, useState } from "react";
-import { FaArrowRight } from "react-icons/fa";
+import { FormEvent } from "react";
+import { FaArrowRight, FaFilter } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { NavLink } from "react-router-dom"; // Assuming you are using react-router-dom
+import { NavLink } from "react-router-dom";
 
 const Products = () => {
-    // State for searchTerm, minPrice, and maxPrice
     const [searchTerm, setSearchTerm] = useState("");
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
     const [sort, setSort] = useState('');
     const [category, setCategory] = useState("");
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-    // Fetching all products initially
     const { isLoading, data } = useGetAllProductsQuery({ searchTerm, minPrice, maxPrice, sort, category });
 
-
-    // Handle the search term submission
     const handleSearchTerm = (e: FormEvent) => {
         e.preventDefault();
         setSearchTerm((e.target as HTMLFormElement).search.value);
     };
 
-    // Handle changes to min price input on blur
     const handleMinPriceBlur = (e: FormEvent) => {
         setMinPrice(Number((e.target as HTMLInputElement).value));
     };
 
-    // Handle changes to max price input on blur
     const handleMaxPriceBlur = (e: FormEvent) => {
         setMaxPrice(Number((e.target as HTMLInputElement).value));
     };
 
-
-    // Show loading state if data is not yet loaded
-    if (isLoading) {
-        return <LoadingComponent />
-    }
-
-
-    // reset all functionalities
     const handleResetAll = () => {
         setSearchTerm("");
         setMinPrice(0);
         setMaxPrice(0);
         setSort('');
         setCategory("");
-    }
+    };
 
+    if (isLoading) {
+        return <LoadingComponent />;
+    }
 
     return (
         <div className="flex flex-col justify-start items-start">
             {/* Title section */}
-            <div className="w-full h-[300px] flex flex-col justify-center items-start bg-slate-300 px-10 py-5"
+            <div className="w-full h-[200px] md:h-[250px] lg:h-[300px] flex flex-col justify-center items-start bg-slate-300 px-5 md:px-10 py-5"
                 style={{
                     backgroundImage: "linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('/public/bg/bg3.webp')",
                     backgroundPosition: 'center center',
@@ -65,20 +56,30 @@ const Products = () => {
                     backgroundRepeat: 'no-repeat',
                     backgroundAttachment: 'fixed'
                 }}>
-                <h1 className="font-primary text-left text-5xl font-semibold text-primary">Products</h1>
+                <h1 className="font-primary text-left text-3xl md:text-4xl lg:text-5xl font-semibold text-primary">Products</h1>
 
                 {/* Breadcrumb section */}
                 <nav className="flex text-sm text-bodyText mt-4 font-medium">
-                    <NavLink to="/" className=" hover:text-primary duration-200">Home</NavLink>
+                    <NavLink to="/" className="hover:text-primary duration-200">Home</NavLink>
                     <span className="mx-2">/</span>
                     <span className="text-gray-500">Products</span>
                 </nav>
             </div>
 
             {/* Main content section */}
-            <div className="container mx-auto flex justify-between items-stretch h-full gap-8">
+            <div className="container mx-auto flex flex-col lg:flex-row justify-between items-stretch h-full lg:gap-8">
+                {/* Filter toggle button for mobile/tablet */}
+                <div className="lg:hidden w-full px-5 py-4">
+                    <Button
+                        onClick={() => setIsFilterOpen(!isFilterOpen)}
+                        className="w-full flex justify-center items-center gap-2"
+                    >
+                        <FaFilter /> {isFilterOpen ? "Hide Filters" : "Show Filters"}
+                    </Button>
+                </div>
+
                 {/* Filtering section */}
-                <div className="w-[25%] border-r border-secondary/20 px-5 py-10 flex flex-col justify-start items-start gap-6">
+                <div className={`w-full lg:w-[25%] lg:border-r border-secondary/20 px-5 py-10 flex flex-col justify-start items-start gap-6 ${isFilterOpen ? 'block' : 'hidden lg:block'}`}>
                     {/* Search input */}
                     <form onSubmit={handleSearchTerm} className="flex justify-start items-stretch w-full">
                         <input
@@ -96,16 +97,12 @@ const Products = () => {
                     <div className="w-full flex flex-col justify-start items-start gap-4">
                         <h3 className="font-primary text-xl font-semibold">Sort</h3>
                         <div className="flex flex-col justify-start items-start w-full gap-1">
-
-                            {/* low to high = price */}
                             <Button
                                 onClick={() => setSort('price')}
                                 className={sort === 'price' ? "bg-black/50 text-white" : "bg-customGray/60"}
                                 variant={"gray"}>
                                 Price, low to high
                             </Button>
-
-                            {/* high to low = -price */}
                             <Button
                                 onClick={() => setSort('-price')}
                                 className={sort === '-price' ? "bg-black/50 text-white" : "bg-customGray/60"}
@@ -135,13 +132,11 @@ const Products = () => {
                     <div className="w-full flex flex-col justify-start items-start gap-4">
                         <h3 className="font-primary text-xl font-semibold">Price</h3>
                         <div className="w-full flex justify-between items-center gap-12">
-                            {/* Min price input */}
                             <Input
                                 defaultValue={minPrice === 0 ? "" : minPrice}
                                 placeholder={minPrice === 0 ? "--" : ""}
                                 onBlur={handleMinPriceBlur}
                             />
-                            {/* Max price input */}
                             <Input
                                 defaultValue={maxPrice === 0 ? "" : maxPrice}
                                 placeholder={maxPrice === 0 ? "--" : ""}
@@ -160,10 +155,10 @@ const Products = () => {
                 </div>
 
                 {/* Products display section */}
-                <div className="w-[75%] px-5 py-10 grid grid-cols-3 gap-x-10 gap-y-12">
+                <div className="w-full lg:w-[75%] px-5 py-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 md:gap-x-10 gap-y-12">
                     {
                         data?.data?.products.length === 0 ?
-                            <div className="h-screen col-span-3 flex justify-center items-start mt-14">
+                            <div className="h-screen col-span-full flex justify-center items-start mt-14">
                                 <p className="font-primary text-xl text-bodyText/70">No products found</p>
                             </div>
                             :

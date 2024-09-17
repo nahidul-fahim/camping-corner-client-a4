@@ -6,12 +6,14 @@ import { Button } from "../ui/button";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
 import CustomDropdown from "../customDropDown/CustomDropDown";
+import { selectCartProducts } from "@/redux/features/cart/cartSlice";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userData = useAppSelector(selectCurrentUser);
   const currentUser = userData?.user;
   const dispatch = useAppDispatch();
+  const allCartProducts = useAppSelector(selectCartProducts);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -112,6 +114,14 @@ const Header = () => {
               <Link to="/cart" className="flex items-center gap-2">
                 <FaCartShopping className="text-bodyText text-xl" />
                 <span>Cart</span>
+              </Link>
+              <Link to={"/cart"} className="relative">
+                <FaCartShopping className="text-bodyText text-xl" />
+                {allCartProducts.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                    {allCartProducts.length}
+                  </span>
+                )}
               </Link>
               <Link to="/wishlist" className="flex items-center gap-2">
                 <FaHeart className="text-bodyText text-xl" />

@@ -8,9 +8,6 @@ type ProductCardProps = {
 
 const ProductCard = ({ product }: ProductCardProps) => {
 
-    // converting name to slug
-    // const slug = product?.name.split(" ").join("-").toLowerCase();
-
     return (
         <div className="flex flex-col justify-center items-center gap-2 group">
             <Link to={`/products/${product?._id}`}>
