@@ -6,11 +6,16 @@ import { Input } from "@/components/ui/input";
 import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
 import { TProduct } from "@/types/ProductType";
 import { FormEvent } from "react";
-import { FaArrowRight, FaFilter } from "react-icons/fa";
+import { FaArrowRight, FaFilter, FaHeart, FaRegHeart } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { NavLink, useSearchParams } from "react-router-dom";
+import { addToWishlist, removeFromWishlist, selectWishlistItems, TWishlistProduct } from "@/redux/features/wishlist/wishlistSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 const Products = () => {
+    const dispatch = useAppDispatch();
+    const wishlistItems = useAppSelector(selectWishlistItems);
+
     const [searchTerm, setSearchTerm] = useState("");
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
@@ -25,7 +30,6 @@ const Products = () => {
             setCategory(categoryParams);
         }
     }, [categoryParams])
-
 
     // get all products
     const { isLoading, data } = useGetAllProductsQuery({ searchTerm, minPrice, maxPrice, sort, category });
@@ -49,6 +53,23 @@ const Products = () => {
         setMaxPrice(0);
         setSort('');
         setCategory("");
+    };
+
+    const isInWishlist = (productId: string) => {
+        return wishlistItems.some((item: TWishlistProduct) => item.productId === productId);
+    };
+
+    const handleWishlistToggle = (product: TProduct) => {
+        if (isInWishlist(product._id)) {
+            dispatch(removeFromWishlist(product._id));
+        } else {
+            dispatch(addToWishlist({
+                productId: product._id,
+                productName: product.name,
+                productPrice: product.price,
+                productImage: product.image
+            }));
+        }
     };
 
     if (isLoading) {
@@ -173,7 +194,18 @@ const Products = () => {
                             </div>
                             :
                             data?.data?.products.map((product: TProduct, idx: number) => (
-                                <ProductCard key={idx} product={product} />
+                                <div key={idx} className="relative">
+                                    <ProductCard product={product} />
+                                    <Button
+                                        onClick={() => handleWishlistToggle(product)}
+                                        className="absolute top-2 right-2 p-2 bg-white/80 hover:bg-white rounded-full"
+                                    >
+                                        {isInWishlist(product._id) ?
+                                            <FaHeart className="text-red-500" /> :
+                                            <FaRegHeart />
+                                        }
+                                    </Button>
+                                </div>
                             ))
                     }
                 </div>

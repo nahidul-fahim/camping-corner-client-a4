@@ -37,7 +37,7 @@ const ProductCard = ({ product }: { product: TProduct }) => (
     </CardContent>
     <CardFooter className="p-4 pt-0">
       <Button asChild className="w-full">
-        <Link to={`/product/${product._id}`}>View Details</Link>
+        <Link to={`/products/${product._id}`}>View Details</Link>
       </Button>
     </CardFooter>
   </Card>

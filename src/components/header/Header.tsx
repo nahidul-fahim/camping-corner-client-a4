@@ -87,7 +87,10 @@ const Header = () => {
           <Link to={"/cart"}>
             <FaCartShopping className="text-bodyText text-xl" />
           </Link>
-          <FaHeart className="text-bodyText text-xl" />
+          {/* wishlist */}
+          <Link to={"/wishlist"}>
+            <FaHeart className="text-bodyText text-xl" />
+          </Link>
           {currentUser ? (
             <Button onClick={handleLogout}>Logout</Button>
           ) : (
