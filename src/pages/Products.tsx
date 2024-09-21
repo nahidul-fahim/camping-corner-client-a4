@@ -201,8 +201,8 @@ const Products = () => {
                                         className="absolute top-2 right-2 p-2 bg-white/80 hover:bg-white rounded-full"
                                     >
                                         {isInWishlist(product._id) ?
-                                            <FaHeart className="text-red-500" /> :
-                                            <FaRegHeart />
+                                            <FaHeart className="text-primary" /> :
+                                            <FaRegHeart className="text-primary" />
                                         }
                                     </Button>
                                 </div>

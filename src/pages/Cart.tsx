@@ -207,7 +207,7 @@ const Cart = () => {
       <div className="w-full flex flex-col lg:flex-row justify-center items-start gap-6 lg:gap-10">
         {allCartProducts.length === 0 ? (
           <div className="w-full lg:w-2/3 flex justify-center items-center">
-            <p className="text-lg font-medium text-bodyText">No products in the cart.</p>
+            <p className="text-lg font-medium text-gray-600">No products in the cart.</p>
           </div>
         ) : (
           <div className="w-full lg:w-2/3 overflow-x-auto">

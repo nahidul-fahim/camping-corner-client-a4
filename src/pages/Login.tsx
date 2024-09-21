@@ -9,9 +9,7 @@ import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-
 const Login = () => {
-
     // states
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
@@ -24,7 +22,6 @@ const Login = () => {
     // redux hooks
     const dispatch = useAppDispatch();
     const [login, { isLoading }] = useLoginMutation();
-
 
     // submission
     const onSubmit = async (data: FieldValues) => {
@@ -53,12 +50,10 @@ const Login = () => {
         }
     }
 
-
     return (
-        <div className="relative flex min-h-[100vh]">
-
-            {/* image section */}
-            <div className="fixed top-0 left-0 h-full w-2/5"
+        <div className="flex flex-col lg:flex-row min-h-screen">
+            {/* Background section */}
+            <div className="md:fixed top-0 left-0 h-40 md:h-full w-full md:w-2/5 z-[-10]"
                 style={{
                     backgroundImage: "url('/bg/bgAlone.webp')",
                     backgroundPosition: 'center',
@@ -68,10 +63,10 @@ const Login = () => {
             </div>
 
             {/* form section */}
-            <div className="ml-[40%] container mx-auto p-10 overflow-y-auto flex flex-col justify-center items-start">
+            <div className="w-full md:ml-[40%] container mx-auto p-5 md:p-10 bg-white flex flex-col justify-center items-start overflow-x-hidden">
                 <h2 className="text-3xl font-primary text-primary font-bold mb-5">Welcome back</h2>
-                <RHFormProvider onSubmit={onSubmit} className="space-y-5 w-4/5">
-                    <div className="space-y-5 pr-20">
+                <RHFormProvider onSubmit={onSubmit} className="space-y-5 w-full">
+                    <div className="w-full md:w-4/5 xl:w-3/5 space-y-5">
                         <RHInput
                             type="email"
                             name="email"
@@ -89,7 +84,7 @@ const Login = () => {
                             />
                             <button
                                 type="button"
-                                className="absolute top-[60%] right-5"
+                                className="absolute top-[60%] right-3"
                                 onClick={handleShowPassword}>
                                 {
                                     showPassword ?

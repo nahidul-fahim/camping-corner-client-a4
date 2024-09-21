@@ -81,37 +81,39 @@ const Header = () => {
           {navMenu}
         </div>
 
-        {/* Cart, heart, login/logout for desktop */}
+        {/* Conditional rendering for cart, heart, and user dropdown for desktop */}
         <div className="hidden md:flex items-center gap-7">
-          {/* cart */}
-          <Link to={"/cart"} className="relative">
-            <FaCartShopping className="text-bodyText text-xl" />
-            {allCartProducts.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                {allCartProducts.length}
-              </span>
-            )}
-          </Link>
-          {/* wishlist */}
-          <Link to={"/wishlist"}>
-            <FaHeart className="text-bodyText text-xl" />
-          </Link>
           {currentUser ? (
-            <Button onClick={handleLogout}>Logout</Button>
+            <>
+              {/* Cart */}
+              <Link to={"/cart"} className="relative">
+                <FaCartShopping className="text-bodyText text-xl" />
+                {allCartProducts?.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                    {allCartProducts?.length}
+                  </span>
+                )}
+              </Link>
+              {/* Wishlist */}
+              <Link to={"/wishlist"}>
+                <FaHeart className="text-bodyText text-xl" />
+              </Link>
+              <Button onClick={handleLogout}>Logout</Button>
+              <CustomDropdown
+                trigger={
+                  <button className="focus:outline-none">
+                    <FaCircleUser className="text-3xl hover:scale-105 duration-300" />
+                  </button>
+                }
+                label={currentUser?.name}
+                menuGroup={adminLinks}
+              />
+            </>
           ) : (
-            <Link to={"/login"}>
+            <Link to="/login">
               <Button>Login</Button>
             </Link>
           )}
-          <CustomDropdown
-            trigger={
-              <button className="focus:outline-none">
-                <FaCircleUser className="text-3xl hover:scale-105 duration-300" />
-              </button>
-            }
-            label={currentUser?.name}
-            menuGroup={adminLinks}
-          />
         </div>
 
         {/* Mobile menu */}
@@ -119,33 +121,31 @@ const Header = () => {
           <div className="w-full md:hidden mt-4 absolute bg-white top-8 left-[50%] translate-x-[-50%] px-5 py-5">
             <div className="flex flex-col gap-4">
               {navMenu}
-              <Link to="/cart" className="flex items-center gap-2 relative">
-                <FaCartShopping className="text-bodyText text-xl" />
-                <span>Cart</span>
-                {allCartProducts.length > 0 && (
-                  <span className="absolute -top-2 left-4 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                    {allCartProducts.length}
-                  </span>
-                )}
-              </Link>
-              <Link to="/wishlist" className="flex items-center gap-2">
-                <FaHeart className="text-bodyText text-xl" />
-                <span>Wishlist</span>
-              </Link>
-              {currentUser && (
+              {currentUser ? (
                 <>
+                  <Link to="/cart" className="flex items-center gap-2 relative">
+                    <FaCartShopping className="text-bodyText text-xl" />
+                    <span>Cart</span>
+                    {allCartProducts?.length > 0 && (
+                      <span className="absolute -top-2 left-4 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                        {allCartProducts?.length}
+                      </span>
+                    )}
+                  </Link>
+                  <Link to="/wishlist" className="flex items-center gap-2">
+                    <FaHeart className="text-bodyText text-xl" />
+                    <span>Wishlist</span>
+                  </Link>
                   {adminLinks.map((link, index) => (
                     <Link key={index} to={link.link} className="flex items-center gap-2">
                       <span>{link.name}</span>
                     </Link>
                   ))}
+                  <button onClick={handleLogout} className="flex items-center gap-2">
+                    <FaCircleUser className="text-bodyText text-xl" />
+                    <span>Logout</span>
+                  </button>
                 </>
-              )}
-              {currentUser ? (
-                <button onClick={handleLogout} className="flex items-center gap-2">
-                  <FaCircleUser className="text-bodyText text-xl" />
-                  <span>Logout</span>
-                </button>
               ) : (
                 <Link to="/login" className="flex items-center gap-2">
                   <FaCircleUser className="text-bodyText text-xl" />
