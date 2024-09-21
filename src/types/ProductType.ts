@@ -6,6 +6,7 @@ export type TProduct = {
     description: string;
     category: string;
     image: string;
+    rating?: number;
     isDeleted: boolean;
     slug: string;
     createdAt: Date;

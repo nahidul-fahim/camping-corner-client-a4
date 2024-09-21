@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoadingComponent from "@/components/loadingComponent/LoadingComponent";
 import ProductCard from "@/components/productCard/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { TProduct } from "@/types/ProductType";
 import { FormEvent } from "react";
 import { FaArrowRight, FaFilter } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { NavLink } from "react-router-dom";
+import { NavLink, useSearchParams } from "react-router-dom";
 
 const Products = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -18,6 +18,16 @@ const Products = () => {
     const [category, setCategory] = useState("");
     const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+    const [searchParams] = useSearchParams();
+    const categoryParams = searchParams.get('category') || '';
+    useEffect(() => {
+        if (categoryParams) {
+            setCategory(categoryParams);
+        }
+    }, [categoryParams])
+
+
+    // get all products
     const { isLoading, data } = useGetAllProductsQuery({ searchTerm, minPrice, maxPrice, sort, category });
 
     const handleSearchTerm = (e: FormEvent) => {

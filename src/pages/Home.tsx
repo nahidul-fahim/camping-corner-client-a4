@@ -6,6 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { useGetAllProductsQuery } from '@/redux/features/product/productApi';
 import { TProduct } from '@/types/ProductType';
 import { FaStar } from 'react-icons/fa';
+import LoadingComponent from '@/components/loadingComponent/LoadingComponent';
 
 const ProductCard = ({ product }: { product: TProduct }) => (
   <Card className="flex flex-col h-full transition-all duration-500 shadow-none hover:shadow-lg">
@@ -30,7 +31,7 @@ const ProductCard = ({ product }: { product: TProduct }) => (
         </span>
         <div className="flex items-center">
           <FaStar className="text-yellow-500 mr-1" />
-          <span className="text-sm font-medium">{product?.rating.toFixed(1)}</span>
+          <span className="text-sm font-medium">{product?.rating?.toFixed(1)}</span>
         </div>
       </div>
     </CardContent>
@@ -46,7 +47,7 @@ const Home = () => {
   const { data: productsData, isLoading, isError } = useGetAllProductsQuery({});
 
   const bestSellingProducts = productsData?.data?.products
-    .filter((product: TProduct) => product?.rating >= 4.5)
+    .filter((product: TProduct) => product?.rating as number >= 4.5)
     .slice(0, 4);
 
   const categories = [
@@ -55,7 +56,7 @@ const Home = () => {
     { name: 'Cooking', icon: '🍳' },
     { name: 'Clothing', icon: '👕' },
     { name: 'Accessories', icon: '🎒' },
-    { name: 'Tools', icon: '🔧' },
+    { name: 'Lighting', icon: '💡' },
   ];
 
   const faqs = [
@@ -65,7 +66,7 @@ const Home = () => {
     { question: 'Are your products eco-friendly?', answer: 'Many of our products are made with sustainable materials. Look for our eco-friendly badge on product pages.' },
   ];
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingComponent />;
   if (isError) return <div>Error loading products</div>;
 
   return (
