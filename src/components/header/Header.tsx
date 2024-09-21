@@ -84,8 +84,13 @@ const Header = () => {
         {/* Cart, heart, login/logout for desktop */}
         <div className="hidden md:flex items-center gap-7">
           {/* cart */}
-          <Link to={"/cart"}>
+          <Link to={"/cart"} className="relative">
             <FaCartShopping className="text-bodyText text-xl" />
+            {allCartProducts.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                {allCartProducts.length}
+              </span>
+            )}
           </Link>
           {/* wishlist */}
           <Link to={"/wishlist"}>
@@ -114,14 +119,11 @@ const Header = () => {
           <div className="w-full md:hidden mt-4 absolute bg-white top-8 left-[50%] translate-x-[-50%] px-5 py-5">
             <div className="flex flex-col gap-4">
               {navMenu}
-              <Link to="/cart" className="flex items-center gap-2">
+              <Link to="/cart" className="flex items-center gap-2 relative">
                 <FaCartShopping className="text-bodyText text-xl" />
                 <span>Cart</span>
-              </Link>
-              <Link to={"/cart"} className="relative">
-                <FaCartShopping className="text-bodyText text-xl" />
                 {allCartProducts.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                  <span className="absolute -top-2 left-4 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                     {allCartProducts.length}
                   </span>
                 )}
