@@ -205,9 +205,15 @@ const Cart = () => {
       <h1 className="font-primary text-2xl sm:text-3xl font-medium text-primary">Cart</h1>
 
       <div className="w-full flex flex-col lg:flex-row justify-center items-start gap-6 lg:gap-10">
-        <div className="w-full lg:w-2/3 overflow-x-auto">
-          <DataTable tableColumns={tableColumns} tableRows={allCartProducts} />
-        </div>
+        {allCartProducts.length === 0 ? (
+          <div className="w-full lg:w-2/3 flex justify-center items-center">
+            <p className="text-lg font-medium text-bodyText">No products in the cart.</p>
+          </div>
+        ) : (
+          <div className="w-full lg:w-2/3 overflow-x-auto">
+            <DataTable tableColumns={tableColumns} tableRows={allCartProducts} />
+          </div>
+        )}
 
         <div className="w-full lg:w-1/3 flex flex-col justify-start items-start border border-bodyText/10 rounded-lg">
           <div className="bg-white px-4 sm:px-5 py-3 rounded-t-lg w-full">
@@ -223,28 +229,22 @@ const Cart = () => {
               <span className="text-gray-600 text-sm sm:text-base">Shipping:</span>
               <span className="font-medium text-sm sm:text-base">$0.00</span>
             </div>
-            <div className="flex justify-between items-center mb-2 w-full">
-              <span className="text-gray-600 text-sm sm:text-base">Tax:</span>
+            <div className="flex justify-between items-center mb-4 w-full">
+              <span className="text-gray-600 text-sm sm:text-base">Estimated Tax:</span>
               <span className="font-medium text-sm sm:text-base">$0.00</span>
             </div>
-            <div className="flex justify-between items-center border-t pt-2 mt-2 w-full">
-              <span className="text-black text-base sm:text-lg font-semibold">Total:</span>
-              <span className="font-bold text-black text-base sm:text-lg">
-                ${totalPrice}
-              </span>
+            <div className="flex justify-between items-center w-full">
+              <span className="text-gray-600 text-sm sm:text-base">Total:</span>
+              <span className="font-medium text-base sm:text-lg">${totalPrice}</span>
             </div>
+
             <Button
-              className="mt-4 sm:mt-5 w-full text-sm sm:text-base"
-              disabled={isOutOfStock}
+              className="w-full mt-4"
+              disabled={isOutOfStock || allCartProducts.length === 0}
               onClick={handlePlaceOrder}
             >
-              Place Order
+              {isOutOfStock ? "Out of stock" : "Proceed to checkout"}
             </Button>
-            {isOutOfStock && (
-              <p className="text-red-500 font-medium text-center text-xs sm:text-sm mt-2">
-                Some items are out of stock. Please adjust your cart.
-              </p>
-            )}
           </div>
         </div>
       </div>
